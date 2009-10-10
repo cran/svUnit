@@ -224,6 +224,15 @@ install.packages("svUnit",repos="http://R-Forge.R-project.org")
 
 @
 \end{lyxSchunk}
+
+\begin{lyxSchunk}
+<<echo = FALSE, results = hide>>=
+
+options(useFancyQuotes = FALSE)
+
+@
+\end{lyxSchunk}
+
 This package has no dependence other than R $\geq$ 1.9.0. However,
 if you would like to use its interactive mode in a GUI editor, you
 must also install Komodo Edit and SciViews. The procedure is explaned

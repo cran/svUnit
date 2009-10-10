@@ -115,6 +115,7 @@ status collapsed
 status collapsed
 
 \begin_layout Plain Layout
+
 R CMD check <Pkg>
 \end_layout
 
@@ -584,6 +585,7 @@ There is also no integration with the "regular"
 status collapsed
 
 \begin_layout Plain Layout
+
 R CMD check
 \end_layout
 
@@ -616,6 +618,7 @@ RUnit
 status collapsed
 
 \begin_layout Plain Layout
+
 R CMD check
 \end_layout
 
@@ -670,6 +673,7 @@ RUnit
 status collapsed
 
 \begin_layout Plain Layout
+
 R CMD check
 \end_layout
 
@@ -980,6 +984,19 @@ install.packages("svUnit",repos="http://R-Forge.R-project.org")
 \begin_layout R-Chunk
 @
 \end_layout
+
+\begin_layout R-Chunk
+<<echo = FALSE, results = hide>>=
+\end_layout
+
+\begin_layout R-Chunk
+options(useFancyQuotes = FALSE)
+\end_layout
+
+\begin_layout R-Chunk
+@
+\end_layout
+
 
 \begin_layout Standard
 This package has no dependence other than R 
@@ -2892,6 +2909,7 @@ R
 status collapsed
 
 \begin_layout Plain Layout
+
 R CMD check
 \end_layout
 
@@ -3495,6 +3513,7 @@ R Unit
 status collapsed
 
 \begin_layout Plain Layout
+
 R CMD check
 \end_layout
 
@@ -3520,6 +3539,7 @@ status collapsed
 status collapsed
 
 \begin_layout Plain Layout
+
 R CMD check
 \end_layout
 
@@ -3552,6 +3572,7 @@ status collapsed
 status collapsed
 
 \begin_layout Plain Layout
+
 R CMD check
 \end_layout
 
@@ -3661,6 +3682,7 @@ errorLog()
 status collapsed
 
 \begin_layout Plain Layout
+
 R CMD check
 \end_layout
 
@@ -3682,6 +3704,7 @@ svUnit
 status collapsed
 
 \begin_layout Plain Layout
+
 R CMD check
 \end_layout
 

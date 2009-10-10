@@ -9,15 +9,20 @@ function (lib, pkg)
 	# Look if the SciViews-K Unit Komodo extension is installed
 	.installUpgradeKomodoExtension()
 	# Install a callback to update the list of units automatically in the GUI
-	.assignTemp(".taskCallbackId", addTaskCallback(guiSuiteAutoList))
+	# Use the mechanism introduced in svSocket 0.9-48 to allow execution of
+	# this task callback from a socket client too
+	h <- .getTemp(".svTaskCallbackManager", default = NULL)
+	if (!is.null(h))
+		h$add(guiSuiteAutoList, name = "guiSuiteAutoList")
 }
 
 ".onUnload" <-
 function (libpath)
 {
-	# Delete the taskCallback
-	taskCallbackId <- .getTemp(".taskCallbackId", NULL)
-	if (!is.null(taskCallbackId)) removeTaskCallback(taskCallbackId)
+	# Delete the task callback
+	h <- .getTemp(".svTaskCallbackManager", default = NULL)
+	if (!is.null(h))
+		h$remove("guiSuiteAutoList")
 	# and clear the list of units in the GUI client
 	if (exists("koCmd", mode = "function"))
 		get("koCmd")('sv.r.unit.getRUnitList_Callback("");')
@@ -25,7 +30,7 @@ function (libpath)
 
 ".packageName" <- "svUnit"
 
-".komodoExtensionMinVersion" <- "0.6.0"
+".komodoExtensionMinVersion" <- "0.7.1"
 
 ".installUpgradeKomodoExtension" <-
 function ()

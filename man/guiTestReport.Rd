@@ -31,11 +31,11 @@ guiSuiteAutoList(\dots)
 }
 
 \value{
-  \code{guiSuiteList() returns thde list of available test suites invisibly.
+  \code{guiSuiteList()} returns the list of available test suites invisibly.
   \code{guiSuiteAutoList()} is used to establish a callback to automatically
   list the available test suites in the GUI. It is not intended to be called
   directly by the user. The other functions just return \code{TRUE} invisibly.
-  They are used for their side effect of sending data to compatible GUI clients. }
+  They are used for their side effect of sending data to compatible GUI clients.
 }
 
 \author{ Philippe Grosjean <phgrosjean@sciviews.org> }

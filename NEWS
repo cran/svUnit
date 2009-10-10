@@ -1,48 +1,69 @@
 = svUnit News
 
+== svUnit 0.7-1
+
+* Upgrade to the Komodo SciViews-K Unit plugin version 0.7-1.
+
+
+== svUnit 0.7-0
+
+* Typo correction in guiTestReport.Rd.
+
+
+== svUnit 0.6-3
+
+* The task callback mechanism introduced in svSocket 0.9-48 is now used to all
+  running the task after R code send by socket clients is executed.
+
+
 == svUnit 0.6-2
+
 * There is now a vignette for the svUnit package.
 
 
 == svUnit 0.6-1
+
 * Correction of a bug in Windows relative to path separators \\ versus /,
-especially usinf tempdir().
+  especially usinf tempdir().
 
 * Correction of a bug that prevented to list runit*.R files in the unitTests
-subdirectory of a package under Windows.
+  subdirectory of a package under Windows.
 
 
 == svUnit 0.6-0
+
 * The package does not depends any more from RUnit. It has his own checkXXX()
-function (they are compatible with those in RUnit 0.4.17, except that here the
-checkTrue() function is vectorized, but they operate very differently),
+  function (they are compatible with those in RUnit 0.4.17, except that here the
+  checkTrue() function is vectorized, but they operate very differently),
 
 * svUnit functions and objects are renamed svSuite, and there is a reworking of
-objects to end with svTest, svSuite, svTestData and svSuiteData, and many new
-methods for those objects (print, summary, stats, metadata, makeUnit, runTest)
+  objects to end with svTest, svSuite, svTestData and svSuiteData, and many new
+  methods for those objects (print, summary, stats, metadata, makeUnit, runTest)
 
 * print.svSuiteData and summary.svSuiteData are completely reworked.
 
 * svSuiteList() now accepts additional, dirs, manages an exclusion list and has
-an argument 'loadPackages' to force loading packages provided in the list.
+  an argument 'loadPackages' to force loading packages provided in the list.
 
 * Names for test units is now runit<name>.R, like in the RUnit package. Same for
-the test functions which are test<name>.R (used to be runit.<name>.R and
-test.<name.R).
+  the test functions which are test<name>.R (used to be runit.<name>.R and
+  test.<name.R).
 
 * The temporary directory is now emptied from old runit*.R files before making
-new ones, but not any more after running tests. That way, we avoid running old
-test definitions, while keeping the latest one available for inspection.
+  new ones, but not any more after running tests. That way, we avoid running old
+  test definitions, while keeping the latest one available for inspection.
 
 * koUnit_xxx() functions have been added to manipulate the R Unit GUI in
-Komodo from within R.
+  Komodo from within R.
 
 
 == svUnit 0.5-0
+
 * Added guiTestFeedback() and guiTestReport() functions.
 
 * A couple of other little changes.
 
 
 == svUnit 0.4-0
+
 First version compiled as a package and distributed on R-Forge.

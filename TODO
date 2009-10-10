@@ -7,13 +7,13 @@
 * Output results in htm, wiki, etc. format (summary.svSuiteData).
 
 * Queue tests to run and run them asynchronously using tcltk and after() if
-this package is loaded and we are in interactive() mode.
+  this package is loaded and we are in interactive() mode.
 
 * RUnit code coverage functions.
 
 * People ask for checkWarning() function... But warnings are not part of code
-execution. Provide an example to show how, by using options(warning = ...) and
-checkException(), one can detect warnings.
+  execution. Provide an example to show how, by using options(warning = ...) and
+  checkException(), one can detect warnings.
 
 * butler: benchmark and profiling => check it.
 
@@ -24,12 +24,12 @@ checkException(), one can detect warnings.
 * Translate this package.
 
 * In RUnit/share/R, there are checkCode.r and compareRUnitTestData.r. The former
-provides functions for test R code in R files, the latter does a comparison of
-timings in two test set runs, using a tolerance value. Worth checking and
-integrating later on!
+  provides functions for test R code in R files, the latter does a comparison of
+  timings in two test set runs, using a tolerance value. Worth checking and
+  integrating later on!
 
 * In RUnit: one bug is reported on RUnit SourceForge area for RUnit 0.4.17.
-Follow this to make sure it is corrected (or work on a patch!)
+  Follow this to make sure it is corrected (or work on a patch!)
 
 	myfun <- function(a, b = 98, c = 99){
 		cat("a = ", a, ", b = ", b, ", c = ", c, "\n")
@@ -44,4 +44,5 @@ Follow this to make sure it is corrected (or work on a patch!)
 	# Here, we see that myfun is calld with argument not matched by names!
 
 * In svUnit checkTrue() is vectorized, but not in RUnit. I made a proposition to
-the RUnit maintainer => look what happens in future versions.
+  the RUnit maintainer => look what happens in future versions.
+  
