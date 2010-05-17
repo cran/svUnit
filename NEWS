@@ -1,5 +1,12 @@
 = svUnit News
 
+== svUnit 0.7-2
+
+* Added a unitname argument in runTest.svSuite() to select one test unit
+  to run in the test suite. Thanks to Thomas Wutzler for submitting this
+  patch.
+
+
 == svUnit 0.7-1
 
 * Upgrade to the Komodo SciViews-K Unit plugin version 0.7-1.

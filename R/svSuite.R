@@ -205,7 +205,7 @@ function (x, name = make.names(deparse(substitute(x))), dir = tempdir(),
 }
 
 "runTest.svSuite" <-
-function (x, name = make.names(deparse(substitute(x))), ...)
+function (x, name = make.names(deparse(substitute(x))), unitname = NULL, ...)
 {
 	# Compile and run the test for this 'svSuite' object
 	if (!is.svSuite(x))
@@ -254,9 +254,20 @@ function (x, name = make.names(deparse(substitute(x))), ...)
 	for (dir in dirs)
 		files <- c(files, list.files(dir, pattern = "^runit.+\\.[rR]$",
 			full.names = TRUE))
-	if (length(files) == 0) return(NULL)	# Nothing to run!
+	if (length(files) == 0) return(NULL)	# Nothing to run!	
 	# Under Windows, transform all \\ into / in the file names
 	files <- gsub("\\\\", "/", files)
+	# Added by Thomas Wurtzler to control which unit test to run
+	if (!is.null(unitname)) {
+		unitname <- deparse(substitute(unitname))
+		testNames <- gsub("^.*runit(.+)\\.[rR]$", "\\1", files)
+		keep <- which(testNames == unitname)
+		files <- files[keep]
+		if (length(files) == 0) {
+			warning("Test unit ", unitname, " not found")
+			return(NULL)	
+		}
+	}
 	# Run this test suite now, that is, source each file in .TestSuiteEnv
 	# and run each testxxx function in it, using .setUp and .tearDown too
 	# Record the list of tests

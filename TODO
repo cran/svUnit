@@ -11,20 +11,10 @@
 
 * RUnit code coverage functions.
 
-* People ask for checkWarning() function... But warnings are not part of code
-  execution. Provide an example to show how, by using options(warning = ...) and
-  checkException(), one can detect warnings.
-
-* butler: benchmark and profiling => check it.
-
-* Split example test into smaller test functions.
-
-* Make a vignette (and perhaps a demo) for this package.
-
 * Translate this package.
 
 * In RUnit/share/R, there are checkCode.r and compareRUnitTestData.r. The former
-  provides functions for test R code in R files, the latter does a comparison of
+  provides functions to test R code in R files, the latter does a comparison of
   timings in two test set runs, using a tolerance value. Worth checking and
   integrating later on!
 

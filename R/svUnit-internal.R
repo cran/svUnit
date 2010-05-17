@@ -30,7 +30,7 @@ function (libpath)
 
 ".packageName" <- "svUnit"
 
-".komodoExtensionMinVersion" <- "0.7.1"
+".komodoExtensionMinVersion" <- "0.7.2"
 
 ".installUpgradeKomodoExtension" <-
 function ()

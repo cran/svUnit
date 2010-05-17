@@ -42,7 +42,8 @@ svSuiteList(packages = TRUE, objects = TRUE, dirs = getOption("svUnit.dirs"),
 \method{makeUnit}{svSuite}(x, name = make.names(deparse(substitute(x))),
 	dir = tempdir(), objfile = "", codeSetUp = NULL, codeTearDown = NULL,
 	pos = .GlobalEnv, \dots)
-\method{runTest}{svSuite}(x, name = make.names(deparse(substitute(x))), \dots)
+\method{runTest}{svSuite}(x, name = make.names(deparse(substitute(x))),
+    unitname = NULL, \dots)
 }
 
 \arguments{
@@ -91,6 +92,8 @@ svSuiteList(packages = TRUE, objects = TRUE, dirs = getOption("svUnit.dirs"),
   \item{codeTearDown}{ An expression with some code you want to add to the
     \code{.tearDown() } function in your unit file (this function is executed
 	after each test }
+  \item{unitname}{ The name of a unit to run inside the suite. If \code{NULL}
+    (by default), all units are run }
   \item{\dots}{ Further arguments to pass to \code{makeUnit()} or
     \code{runTest()} (not used yet) }
 }
