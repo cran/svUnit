@@ -1,16 +1,16 @@
-# runit.VirtualClass.R test suite
-# Just one (little bit more complex) example taken from RUnit
+## runit.VirtualClass.R test suite
+## Just one (little bit more complex) example taken from RUnit
 
-# --- Test setup ---
+## Test setup
 if (FALSE) {
-  # Not really needed, but can be handy when writing tests
+  ## Not really needed, but can be handy when writing tests
   library("svUnit")
 }
 
-# package 'methods' is usually loaded, but make sure it is
+## Package 'methods' is usually loaded, but make sure it is
 if (!require(methods)) stop("Package 'methods' is required!")
 
-# Define class (not exported yet by the program, and defined in .GlobalEnv!)
+## Define class (not exported yet by the program, and defined in .GlobalEnv!)
 className <- "MyVirtualBaseClass"
 setClass(className,
     representation("VIRTUAL",
@@ -47,16 +47,15 @@ setMethod("setX<-", signature = signature(object = className, value = "numeric")
     }, where = .GlobalEnv)
 
 
-# --- Test functions ---
-
+## Test functions
 .setUp <- function() {
-	# Executed before each test function
-	# ...
+	## Executed before each test function
+	## ...
 }
 
 .tearDown <- function() {
-	# Executed after each test function
-	# ...
+	## Executed after each test function
+	## ...
 }
 
 testCreateClass <- function() {
@@ -99,10 +98,10 @@ testMyVirtualBaseClass.setX <- function() {
 
 	on.exit(removeClass(testClassName, where = .GlobalEnv))
 
-	# system constructor
+	## System constructor
 	this <- new(testClassName)
 
-	# constructor call succeeded?
+	## Constructor call succeeded?
 	checkTrue(is(this, testClassName))
 
 	testSeq <- 1:23
@@ -111,7 +110,7 @@ testMyVirtualBaseClass.setX <- function() {
 	checkTrue(is(ret, "numeric"))
 	checkEquals(testSeq, ret)
 
-	# error handling
+	## Error handling
 	checkException(setX(this) <- numeric(0))
 	checkException(setX(this) <- as.numeric(NA))
 	checkException(setX(this) <- c(1:4, NA))

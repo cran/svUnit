@@ -1,26 +1,24 @@
-# runitsvSuite.R test suite
-# by Ph. Grosjean <phgrosjean@sciviews.org>
-# run it simply by example(unitTests.svUnit)
+## runitsvSuite.R test suite
+## by Ph. Grosjean <phgrosjean@sciviews.org>
+## Run it simply by example(unitTests.svUnit)
 
-## Create a few objects we need for  our tests
+## Create a few objects we need for our tests
 
-# Save current exclusion list and clear it
+## Save current exclusion list and clear it
 oex <- getOption("svUnit.excludeList")
 
-# Create a very simple 'svTest' object
+## Create a very simple 'svTest' object
 test_R <- svTest(function () {
 	checkTrue(1 < 2)
 })
 
-
 ## The test cases
-
 .setUp <- function () {
-	# Executed before each test function
-	# Remove temporarily the exclusion list for our tests
+	## Executed before each test function
+	## Remove temporarily the exclusion list for our tests
 	options(svUnit.excludeList = NULL)
 
-	# Create an object with associated tests in .GlobalEnv
+	## Create an object with associated tests in .GlobalEnv
 	foo <- function(x) return(x)
 	test(foo) <- function () {
 		checkEqualsNumeric(2, foo(2), 		"foo(2) returns 2")
@@ -28,10 +26,10 @@ test_R <- svTest(function () {
 	}
 	svSuite.foo <<- foo 	# Place a copy of 'foo' in .GlobalEnv
 
-	# Create an object without associated tests in .GlobalEnv
+	## Create an object without associated tests in .GlobalEnv
 	svSuite.bar <<- function(x) return(x^2)
 
-	# Create an integration test in .globalEnv
+	## Create an integration test in .globalEnv
 	test_svSuite <<- svTest(function () {
 		checkTrue(1 == 1,					"example test: 1 == 1")
 		checkException(nonexisting + 1,		"exception when using non existing var")
@@ -39,10 +37,10 @@ test_R <- svTest(function () {
 }
 
 .tearDown <- function () {
-	# Executed after each test function
-	# restore previous exclusion list
+	## Executed after each test function
+	## Restore previous exclusion list
 	options(svUnit.excludeList = oex)
-	# Remove our object with tests in .GlobalEnv
+	## Remove our object with tests in .GlobalEnv
 	rm(svSuite.foo, svSuite.bar, test_svSuite, envir = .GlobalEnv)
 }
 

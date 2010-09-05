@@ -1,32 +1,29 @@
-"is.svTestData" <-
-function (x)
+is.svTestData <- function (x)
 {
-	# It this a svTestData object
+	## It this a svTestData object
 	return(inherits(x, "svTestData"))
 }
 
-"stats" <-
-function (object, ...)
+stats <- function (object, ...)
 	UseMethod("stats")
 
-"stats.svTestData" <-
-function (object, ...)
+stats.svTestData <- function (object, ...)
 {
     if (!is.svTestData(object))
         stop("'object' must inherit from 'svTestData'")
     Stats <- attr(object, "stats")
     Table <- table(object$kind)
-    # Update the table with the total number of test
+    ## Update the table with the total number of test
     Kinds <- c(Stats["tests"] - sum(Table[2:4], na.rm = TRUE), Table[2:4])
     names(Kinds) <- names(Table)
-    # Return a list with the table of kinds and the total timing
+    ## Return a list with the table of kinds and the total timing
     return(list(kind = Kinds, timing = Stats["timing"]))
 }
 
-"print.svTestData" <-
-function (x, all = FALSE, header = TRUE, file = "", append = FALSE, ...)
+print.svTestData <- function (x, all = FALSE, header = TRUE, file = "",
+append = FALSE, ...)
 {
-    # If there is a context attribute, print info about the tests
+    ## If there is a context attribute, print info about the tests
     cat("", file = file, append = append)
     Context <- attr(x, "context")
     if (!is.null(Context)) {
@@ -39,10 +36,10 @@ function (x, all = FALSE, header = TRUE, file = "", append = FALSE, ...)
 				Context["msg"], "\n", sep = "", file = file, append = TRUE)
         cat(paste(c("//Pass:", "Fail:", "Errors:"), Stats$kind[1:3],
             collapse = " "), "//\n\n", sep = "", file = file, append = TRUE)
-       # Don't print tests that succeed if !all
+       ## Don't print tests that succeed if !all
         if (!isTRUE(all)) X <- x[x$kind != "OK", ] else X <- x
     } else X <- x
-    # Print info about each individual filtered test
+    ## Print info about each individual filtered test
     if (nrow(X) > 0) {
         Res <- ifelse(X$res == "", "", paste("\n", X$res, sep = ""))
         cat(paste("* ", X$msg, ": ", X$call, .formatTime(X$timing,
@@ -52,10 +49,10 @@ function (x, all = FALSE, header = TRUE, file = "", append = FALSE, ...)
     return(invisible(x))
 }
 
-"summary.svTestData" <-
-function (object, header = TRUE, file = "", append = FALSE, ...)
+summary.svTestData <- function (object, header = TRUE, file = "",
+append = FALSE, ...)
 {
-    # If there is a context attribute, print info about the tests
+    ## If there is a context attribute, print info about the tests
     cat("", file = file, append = append)
     Context <- attr(object, "context")
     if (!is.null(Context)) {
@@ -69,7 +66,7 @@ function (object, header = TRUE, file = "", append = FALSE, ...)
         cat(paste(c("//Pass:", "Fail:", "Errors:"), Stats$kind[1:3],
             collapse = " "), "//\n\n", sep = "", file = file, append = TRUE)
     }
-    # List tests that failed
+    ## List tests that failed
     Items <- rownames(object)
     Fail <- object$kind == "**FAILS**"
     if (any(Fail)) {
@@ -78,7 +75,7 @@ function (object, header = TRUE, file = "", append = FALSE, ...)
             object$call[Fail], collapse = "\n", sep = ""), "\n\n",
             sep = "", file = file, append = TRUE)
     }
-    # List tests that give errors
+    ## List tests that produce errors
     Err <- object$kind == "**ERROR**"
     if (any(Err)) {
         cat("=== Errors\n", file = file, append = TRUE)

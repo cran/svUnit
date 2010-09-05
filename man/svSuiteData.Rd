@@ -42,22 +42,22 @@ protocol_text(object, file = "", append = FALSE, \dots)
 }
 
 \arguments{
-  \item{x}{ Any kind of object, or a 'svSuiteData' object in the case of
+  \item{x}{ any kind of object, or a 'svSuiteData' object in the case of
     \code{print}. }
-  \item{object}{ a 'svSuiteData' object }
-  \item{fields}{ Character vector. The name of all metadata items you want to
+  \item{object}{ a 'svSuiteData' object. }
+  \item{fields}{ character vector. The name of all metadata items you want to
     extract for the object. The default value is an exhaustive list of all
 	available metadata (i.e., defined by default) in the object, but you
 	can add more: just add a corresponding attribute to your object. }
-  \item{all}{ Do we print concise report for all test, or only for the tests
+  \item{all}{ do we print concise report for all test, or only for the tests
     that fail or produce an error? }
-  \item{file}{ Character. The path to the file where to write the report. If
+  \item{file}{ character. The path to the file where to write the report. If
     \code{file = ""}, the protocol report is output to the console }
-  \item{append}{ Do we append to this file? }
-  \item{type}{ Character. The type of protocol report to create. For the moment,
+  \item{append}{ do we append to this file? }
+  \item{type}{ character. The type of protocol report to create. For the moment,
     only \code{type = "text"} is supported, but further types (HTML, LaTeX,
-	Wiki, etc.) will be provided later }
-  \item{\dots}{ Further arguments to pass to methods. Not used yet. }
+	Wiki, etc.) will be provided later. }
+  \item{\dots}{ further arguments to pass to methods. Not used yet. }
 }
 
 \value{
@@ -79,46 +79,48 @@ protocol_text(object, file = "", append = FALSE, \dots)
 
 \author{ Philippe Grosjean <phgrosjean@sciviews.org> }
 
-\seealso{ \code{\link{svSuite}}, \code{\link{is.svTestData}}, \code{\link{check}},
-	\code{\link{Log}} }
+\seealso{ \code{\link{svSuite}}, \code{\link{is.svTestData}},
+  \code{\link{check}}, \code{\link{Log}} }
 
 \examples{
 clearLog()	# Clear any existing log
 
-# Run some tests
+## Run some tests
 checkTrue(1 < 2)
 checkException(log("a"))
 foo <- function(x, y = 2) return(x * y)
 test(foo) <- function () {
-        checkEqualsNumeric(4, foo(2))
-        checkEqualsNumeric(6, foo(2, nonexisting))
-        checkTrue(is.test(foo))
-        warning("This is a warning")
-        cat("Youhou from test!\n")	# Don't use, except for debugging!
-        checkTrue(is.test(test(foo)))
-        checkIdentical(attr(foo, "test"), test(foo))
-        checkException(foo(2, nonexisting))
-        #DEACTIVATED("My deactivation message")
-        checkException(foo(2))			# This test fails
+    checkEqualsNumeric(4, foo(2))
+    checkEqualsNumeric(6, foo(2, nonexisting))
+    checkTrue(is.test(foo))
+    warning("This is a warning")
+    cat("Youhou from test!\n")  # Don't use, except for debugging!
+    checkTrue(is.test(test(foo)))
+    checkIdentical(attr(foo, "test"), test(foo))
+    checkException(foo(2, nonexisting))
+    #DEACTIVATED("My deactivation message")
+    checkException(foo(2))  # This test fails
 }
 runTest(foo)
 
-# Now inspect the log, which is a 'svSuiteData' object
+## Now inspect the log, which is a 'svSuiteData' object
 is.svSuiteData(Log())
 stats(Log())
 metadata(Log())
 Log()	# Print method
 summary(Log())
 
-# To get a print of the test protocol on file, use:
+\dontrun{
+## To get a print of the test protocol on file, use:
 protocol(Log(), type = "text", file = "RprofProtocol.out")
 file.show("RprofProtocol.out")
 unlink("RprofProtocol.out")
+}
 
 rm(foo)
 
 \dontrun{
-# Profiling of very simple test runs
+## Profiling of very simple test runs
 library(utils)
 createLog(description = "test profiling", deleteExisting = TRUE)
 imax <- 3
@@ -136,13 +138,15 @@ for (i in 1:imax) {
     flush.console()
 }
 Rprof(NULL)
-# Look at profile
+## Look at profile
 summaryRprof()
 unlink("Rprof.out")
 
-# Look at the log
+## Look at the log
 summary(Log())
 }
 }
 
 \keyword{ utilities }
+
+\concept{ unit testing }

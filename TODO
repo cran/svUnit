@@ -2,9 +2,7 @@
 
 * guiTestFeedback() must be finished.
 
-* Install SciViews-K Unit Komodo extension.
-
-* Output results in htm, wiki, etc. format (summary.svSuiteData).
+* Output results in html, latex, wiki, etc. format (summary.svSuiteData).
 
 * Queue tests to run and run them asynchronously using tcltk and after() if
   this package is loaded and we are in interactive() mode.
@@ -12,6 +10,8 @@
 * RUnit code coverage functions.
 
 * Translate this package.
+
+* Test unit for all functions in this package!
 
 * In RUnit/share/R, there are checkCode.r and compareRUnitTestData.r. The former
   provides functions to test R code in R files, the latter does a comparison of

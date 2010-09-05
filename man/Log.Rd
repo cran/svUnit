@@ -22,17 +22,18 @@ lastSuite()
 }
 
 \arguments{
-  \item{description}{ A (short) character string describing this test suite log }
-  \item{deleteExisting}{ Do we delete an existing a \code{.Log} object already
+  \item{description}{ a (short) character string describing this test suite
+    log. }
+  \item{deleteExisting}{ do we delete an existing a \code{.Log} object already
     defined in \code{.GlobalEnv} (no, by default)? }
-  \item{stopit}{ Do we issue an error (\code{stop()} in case of any error or
+  \item{stopit}{ do we issue an error (\code{stop()} in case of any error or
     failure? This is particularly useful if you want to interrupt R CMD check
 	on packages, when you included one or more test suites in examples (see
-	\code{?unitTests} }
-  \item{summarize}{	Should the summary of the log be printed in case we stop
+	\code{?unitTests}. }
+  \item{summarize}{	should the summary of the log be printed in case we stop
     execution of the code when an error is found (see \code{stopit} argument.
 	It is, indeed, useful to indicate at this time which tests failed or raised
-	an error. So, this argument should usually be left at its default value }
+	an error. So, this argument should usually be left at its default value. }
 }
 
 \value{
@@ -63,13 +64,13 @@ lastSuite()
 
 \author{ Philippe Grosjean <phgrosjean@sciviews.org> }
 
-\seealso{ \code{\link{svSuiteData}}, \code{\link{svSuite}}, \code{\link{svTest}},
-  \code{\link{check}} }
+\seealso{ \code{\link{svSuiteData}}, \code{\link{svSuite}},
+  \code{\link{svTest}}, \code{\link{check}} }
 
 \examples{
 clearLog()			# Clear the svUnit log
 
-# Two correct tests
+## Two correct tests
 (checkTrue(1 < 2))
 (checkException(log("a")))
 errorLog()			# Nothing, because there is no error
@@ -84,3 +85,5 @@ clearLog()
 }
 
 \keyword{ utilities }
+
+\concept{ unit testing }

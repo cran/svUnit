@@ -26,16 +26,16 @@ stats(object, \dots)
 }
 
 \arguments{
-  \item{x}{ Any kind of object, or a 'svTestData' object in the case of
+  \item{x}{ any kind of object, or a 'svTestData' object in the case of
     \code{print}. }
-  \item{object}{ a 'svTestData' object }
-  \item{all}{ Do we print concise report for all test, or only for the tests
+  \item{object}{ a 'svTestData' object. }
+  \item{all}{ do we print concise report for all test, or only for the tests
     that fail or produce an error? }
-  \item{header}{ Do we print a header or not? }
-  \item{file}{ Character. The path to the file where to write the report. If
-    \code{file = ""}, the report is output to the console }
-  \item{append}{ Do we append to this file? }
-  \item{\dots}{ Further arguments to pass to methods. Not used yet. }
+  \item{header}{ do we print a header or not? }
+  \item{file}{ character. The path to the file where to write the report. If
+    \code{file = ""}, the report is output to the console. }
+  \item{append}{ do we append to this file? }
+  \item{\dots}{ further arguments to pass to methods. Not used yet. }
 }
 
 \value{
@@ -46,19 +46,19 @@ stats(object, \dots)
 \author{ Philippe Grosjean <phgrosjean@sciviews.org> }
 
 \seealso{ \code{\link{svTest}}, \code{\link{svSuiteData}}, \code{\link{check}},
-	\code{\link{Log}} }
+  \code{\link{Log}} }
 
 \examples{
 foo <- function(x, y = 2) return(x * y)
-is.test(foo)	# No
-# Create test cases for this function
+is.test(foo)  # No
+## Create test cases for this function
 test(foo) <- function () {
 	checkEqualsNumeric(4, foo(2))
 	checkEqualsNumeric(5, foo(2, 3))
 	checkEqualsNumeric(5, foo(nonexists))
 }
-# Generate a 'svTestData' object by running the test
-obj <- runTest(foo)	# Equivalent to runTest(test(foo)), but shorter
+## Generate a 'svTestData' object by running the test
+obj <- runTest(foo)  # Equivalent to runTest(test(foo)), but shorter
 obj
 summary(obj)
 stats(obj)
@@ -68,3 +68,5 @@ rm(foo, obj)
 }
 
 \keyword{ utilities }
+
+\concept{ unit testing }

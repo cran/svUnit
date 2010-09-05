@@ -1,47 +1,51 @@
-".onLoad" <-
-function (lib, pkg)
+.onLoad <- function (lib, pkg)
 {
-	# The default exclusion list, if it is not defined yet
-	# Although there are unit tests defined in these packages (as examples),
-	# we don't want to include them, by default, in our test suite!
+	## The default exclusion list, if it is not defined yet
+	## Although there are unit tests defined in these packages (as examples),
+	## we don't want to include them, by default, in our test suite!
 	if (is.null(getOption("svUnit.excludeList")))
 		options(svUnit.excludeList = c("package:sv", "package:RUnit"))
-	# Look if the SciViews-K Unit Komodo extension is installed
-	.installUpgradeKomodoExtension()
-	# Install a callback to update the list of units automatically in the GUI
-	# Use the mechanism introduced in svSocket 0.9-48 to allow execution of
-	# this task callback from a socket client too
+	## Look if the SciViews-K Unit Komodo extension is installed
+	## TODO: this causes more problems than solutions => temporarily deactivated!
+	#.installUpgradeKomodoExtension()
+	## Install a callback to update the list of units automatically in the GUI
+	## Use the mechanism introduced in svSocket 0.9-48 to allow execution of
+	## this task callback from a socket client too
 	h <- .getTemp(".svTaskCallbackManager", default = NULL)
 	if (!is.null(h))
 		h$add(guiSuiteAutoList, name = "guiSuiteAutoList")
 }
 
-".onUnload" <-
-function (libpath)
+.onUnload <- function (libpath)
 {
-	# Delete the task callback
+	## Delete the task callback
 	h <- .getTemp(".svTaskCallbackManager", default = NULL)
 	if (!is.null(h))
 		h$remove("guiSuiteAutoList")
-	# and clear the list of units in the GUI client
+	## Clear the list of units in the GUI client
 	if (exists("koCmd", mode = "function"))
 		get("koCmd")('sv.r.unit.getRUnitList_Callback("");')
 }
 
-".packageName" <- "svUnit"
+.packageName <- "svUnit"
 
-".komodoExtensionMinVersion" <- "0.7.2"
+.komodoExtensionMinVersion <- "0.7.3"
 
-".installUpgradeKomodoExtension" <-
-function ()
+.installUpgradeKomodoExtension <- function ()
 {
 	if (!exists("koCmd", mode = "function")) return()
-	# Look if the SciViews-K Unit Komodo extension is installed and is of the
-	# right version. Otherwise, propose to install, or update it
+	## Look if the SciViews-K Unit Komodo extension is installed and is of the
+	## right version. Otherwise, propose to install, or update it
 	xpiFile <- system.file("komodo", "sciviewskunit-ko.xpi", package = "svUnit")
-	koVersion <- get("koCmd")('sv.socket.serverWrite(sv.r.unit.version + "." + sv.r.unit.release);')
-	if (inherits(koVersion, "try-error")) {
-		# We need to install the extension
+	## Bug: sometimes this fails, preventing svUnit to load, despite it would
+	## work well past this point. So, I put this in a try() to silently catch
+	## the error and continue loading svUnit anyway (thanks Claudia Beleites)
+	koVersion <- try(
+		get("koCmd")('sv.socket.serverWrite(sv.r.unit.version + "." + sv.r.unit.release);'),
+		silent = TRUE)
+	if (inherits(koVersion, "try-error")) return()
+	if (koVersion == "undefined.undefined") {
+		## We need to install the extension
 		cmd <- 'var res = ko.dialogs.okCancel("The SciViews-K Unit extension is required by svUnit",'
 		cmd <- paste(cmd, '"OK", "Do you want to install the SciViews-K Unit extension now in Komodo?')
 		cmd <- paste(cmd, 'You will be prompted for confirmation (click \'Install Now\')')
@@ -50,7 +54,7 @@ function ()
 		cmd <- paste(cmd, ' if (res == "OK") { ko.open.URI("<<<data>>>"); }', sep = "")
 		get("koCmd")(cmd, data = xpiFile)
 	} else if (.compareVersion(koVersion, .komodoExtensionMinVersion) == -1) {
-		# We need to upgrade the extension
+		## We need to upgrade the extension
 		cmd <- 'var res = ko.dialogs.okCancel("A newer SciViews-K Unit extension is required by svUnit",'
 		cmd <- paste(cmd, '"OK", "Your SciViews-K Unit extension is too old for this version of svUnit.')
 		cmd <- paste(cmd, 'Do you want to upgrade it now?')
@@ -62,10 +66,10 @@ function ()
 	}
 }
 
-".compareVersion" <-
-function (a, b)
+.compareVersion <- function (a, b)
 {
-    # This is the same as compareVersion() in utils, but we don't want dependencies on utils
+    ## This is the same as utils::compareVersion(), but we don't want
+	## dependencies on utils
 	if (is.na(a))
         return(-1)
     if (is.na(b))
@@ -88,22 +92,20 @@ function (a, b)
     else return(0)
 }
 
-".kindLevels" <- c("OK", "**FAILS**", "**ERROR**", "DEACTIVATED")
+.kindLevels <- c("OK", "**FAILS**", "**ERROR**", "DEACTIVATED")
 
-".kind" <-
-function (val = TRUE)
+.kind <- function (val = TRUE)
 {
-    # TRUE or 1 -> 1 = "OK"
-    # FALSE or 0 -> 2 = "**FAILS**"
-    # -1 -> 3 = "**ERROR**"
-    # -2 -> 4 = "DEACTIVATED"
+    ## TRUE or 1 -> 1 = "OK"
+    ## FALSE or 0 -> 2 = "**FAILS**"
+    ## -1 -> 3 = "**ERROR**"
+    ## -2 -> 4 = "DEACTIVATED"
     factor(.kindLevels[-(as.integer(val) - 2)], levels = .kindLevels)
 }
 
-".kindMax" <-
-function (kinds)
+.kindMax <- function (kinds)
 {
-    # If there are no record, must be because all tests succeed!
+    ## If there are no record, must be because all tests succeed!
     if (length(kinds) == 0) return(.kind(TRUE))
     Kinds <- as.numeric(kinds)
     if (sum(Kinds, na.rm = TRUE) == 0) return(.kind(NA))
@@ -111,10 +113,10 @@ function (kinds)
         levels = .kindLevels)
 }
 
-".formatTime" <-
-function (x, secDigits = 0, minSec = 10^-secDigits, prepend = " run in")
+.formatTime <- function (x, secDigits = 0, minSec = 10^-secDigits,
+prepend = " run in")
 {
-	# x is given in seconds, and it returns a pretty formatted string with time
+	## x is given in seconds, and it returns a pretty formatted string with time
 	if (is.null(x) || is.na(x)[1]) return("")
 	x <- as.numeric(x)
 	Sec <- round(x %% 60, digits = secDigits)
@@ -129,14 +131,13 @@ function (x, secDigits = 0, minSec = 10^-secDigits, prepend = " run in")
 	Time[is.na(Time)] <- ""
 	return(Time)
 }
-# Test: .formatTime((0:10)*400 + 0.56)
+## Test: .formatTime((0:10) * 400 + 0.56)
 
-".formatResult" <-
-function (result, level = getOption("svUnit.strLevel"))
+.formatResult <- function (result, level = getOption("svUnit.strLevel"))
 {
 	if (is.null(level)) level <- 1 else level <- as.integer(level[1])
 	if (level < 1) return("")	# Return an empty string
-	# Capture the report returned by the str() function
+	## Capture the report returned by the str() function
 	capture.str <- function(data, level) {
 		rval <- NULL
 		file <- textConnection("rval", "w", local = TRUE)
@@ -155,30 +156,29 @@ function (result, level = getOption("svUnit.strLevel"))
 	return(paste(Str, collapse = "\n"))
 }
 
-".logTest" <-
-function (timing, test, msg = "", description = NULL)
+.logTest <- function (timing, test, msg = "", description = NULL)
 {
     .Log <- Log(description = description)
-    # Determine the name of the test
+    ## Determine the name of the test
     if (missing(test)) {    # Is it defined globally?
         if (exists("..Test", envir = .Log, inherits = FALSE)) {
             test <- .Log$..Test
         } else {            # Try to guess it from the call
             ret <- try(test <- as.character(sys.call(-2))[1], silent = TRUE)
             if (inherits(ret, "try-error") || is.na(test)) {
-                # check...() probably called directly at the command line
-                test <- "eval"	# This is convenient for collecting these tests
-				# together with tests run directly inside runit*.R files (tests
-				# not embedded in test functions)
+                ## check...() probably called directly at the command line
+                test <- "eval"
+				## Convenient for collecting these tests together with tests run
+				## inside runit*.R files (not embedded in test functions)
             } else if (test == "runTest") {
-                # Special case for runTest(myTest) or runTest(test(foo))
+                ## Special case for runTest(myTest) or runTest(test(foo))
                 test <- as.character(sys.call(-2))[2]
             } else if (test == "eval.with.vis") {
 				test <- "eval"
 			}
         }
     }
-    # Do we need to create 'test'?
+    ## Do we need to create 'test'?
     if (!exists(test, envir = .Log, inherits = FALSE)) {
         if (msg == "") msg <- .Log$..Msg
         .Log[[test]] <- structure(
@@ -198,41 +198,39 @@ function (timing, test, msg = "", description = NULL)
                 msg = paste(msg, collapse = "\n")),
             class = c("svTestData", "data.frame"))
     } else {
-        # Just update stats
+        ## Just update stats
         attr(.Log[[test]], "stats") <-
 			attr(.Log[[test]], "stats") + c(1, timing)
     }
     return(test)
 }
 
-".logTestData" <-
-function (test, msg, call, timing, val, kind = .kind(val), res,
-	obj = .Log$..Obj, file = .Log$..File, tag = .Log$..Tag,
-	printTest = getOption("svUnit.printTest"))
+.logTestData <- function (test, msg, call, timing, val, kind = .kind(val), res,
+obj = .Log$..Obj, file = .Log$..File, tag = .Log$..Tag,
+printTest = getOption("svUnit.printTest"))
 {
-    # Add these data to .lastTest
+    ## Add these data to .lastTest
     .Log$.lastTest <- structure(data.frame(
         msg = msg, call = call, timing = timing, kind = kind, res = res,
         obj = obj, file = file, tag = tag, stringsAsFactors = FALSE),
         class = c("svTestData", "data.frame"),
         row.names = as.character(attr(.Log[[test]], "stats")["tests"]))
-    # Add them also to the log of my test
+    ## Add them also to the log of my test
     .Log[[test]][nrow(.Log[[test]]) + 1, ] <- .Log$.lastTest
-    # Do we print detailed results for this test?
+    ## Do we print detailed results for this test?
 	if (is.null(printTest)) printTest <- !interactive() # Guess it from context
 	if (isTRUE(printTest)) print(.Log$.lastTest)
 }
 
-".prepareUnit" <-
-function (name, dir)
+.prepareUnit <- function (name, dir)
 {
-	# Prepare for writing a test unit file
+	## Prepare for writing a test unit file
 	dir <- gsub("\\\\", "/", as.character(dir)[1])
-	# Check that dir exists (do not create it!)
+	## Check that dir exists (do not create it!)
 	if (!file.exists(dir) || !file.info(dir)$isdir)
 		stop("'dir' must be an existing directory")
-	# If dir is tempdir(), then, make sure there are no other runit*.R files
-	# left (should not!) - One can store only one unit at a time in tempdir()!
+	## If dir is tempdir(), then, make sure there are no other runit*.R files
+	## left (should not!) - One can store only one unit at a time in tempdir()!
 	if (dir == gsub("\\\\", "/", tempdir())) {
 		runitfiles <- list.files(dir, pattern = "^runit.*\\.[r|R]$",
 			full.names = TRUE)
@@ -243,11 +241,10 @@ function (name, dir)
 	return(Unit)
 }
 
-".writeSetUp" <-
-function (unit, file = "", msg = "", tag = "", code = NULL)
+.writeSetUp <- function (unit, file = "", msg = "", tag = "", code = NULL)
 {
-	# Write the .setUp() function in the test unit file
-	# Here, we write a context to localize tested objects and test unit files
+	## Write the .setUp() function in the test unit file
+	## Here, we write a context to localize tested objects and test unit files
 	catUnit <- function(...) cat(..., sep = "", file = unit, append = TRUE)
 	catUnit('\n.setUp <-\n')
 	catUnit('function () {\n')
@@ -265,11 +262,10 @@ function (unit, file = "", msg = "", tag = "", code = NULL)
 	catUnit('}\n')
 }
 
-".writeTearDown" <-
-function (unit, code = NULL, rm.unit = TRUE, rm.file = TRUE)
+.writeTearDown <- function (unit, code = NULL, rm.unit = TRUE, rm.file = TRUE)
 {
-	# Write the .tearDown() function in the test unit file
-	# Here, we undo what was done in .setUp()
+	## Write the .tearDown() function in the test unit file
+	## Here, we undo what was done in .setUp()
 	catUnit <- function(...) cat(..., sep = "", file = unit, append = TRUE)
 	catUnit('\n.tearDown <-\n')
 	catUnit('function () {\n')
@@ -286,22 +282,21 @@ function (unit, code = NULL, rm.unit = TRUE, rm.file = TRUE)
 	catUnit('}\n')
 }
 
-".writeTest" <-
-function (unit, objname, pos = .GlobalEnv, obj = NULL)
+.writeTest <- function (unit, objname, pos = .GlobalEnv, obj = NULL)
 {
-	# Make sure that the name of a test function is syntactically correct
-	# and starts with 'test'
+	## Make sure that the name of a test function is syntactically correct
+	## and starts with 'test'
 	if (regexpr("^test", objname) > -1) {
 		testname <- objname
 	} else {
 		testname <- paste("test", objname, sep = "")
 	}
-	# Write the first line in the file
+	## Write the first line in the file
 	catUnit <- function(...) cat(..., file = unit, append = TRUE)
 	catUnit('\n"', testname, '" <-\n', sep = "")
-	# Get the object
+	## Get the object
 	if (missing(obj)) {
-		# Look for 'objname' in 'pos'
+		## Look for 'objname' in 'pos'
 		if (!exists(objname, where = pos)) {
 			Test <- ""
 		} else {
@@ -311,19 +306,19 @@ function (unit, objname, pos = .GlobalEnv, obj = NULL)
 		Test <- test(obj)
 	}
 	if (is.character(Test)) {
-		# Create a dummy test with DEACTIVATED entry indicating missing object
+		## Create a dummy test with DEACTIVATED entry indicating missing object
 		body <- c(
 			'function() {',
 			paste('\tDEACTIVATED("Object', objname, 'not found!")'),
 			'}\n')
 	} else if (is.null(Test)) {
-		# Create a dummy test with DEACTIVATED entry indicating missing test
+		## Create a dummy test with DEACTIVATED entry indicating missing test
 		body <- c(
 			'function() {',
 			paste('\tDEACTIVATED("Object', objname, 'has no tests!")'),
 			'}\n')
 	} else {
-		# Get the body of the test function
+		## Get the body of the test function
 		capture.body <- function(Data) {
 			rval <- NULL
 			File <- textConnection("rval", "w", local = TRUE)
@@ -337,19 +332,19 @@ function (unit, objname, pos = .GlobalEnv, obj = NULL)
 		}
 		body <- capture.body(Test)
 	}
-	# Write the boby of the test function in the file
+	## Write the body of the test function in the file
 	catUnit(body, sep = "\n")
 }
 
-".runTest" <-
-function (x, envir, test, objfile = "", unit = "", tag = "", msg = "")
+.runTest <- function (x, envir, test, objfile = "", unit = "", tag = "",
+msg = "")
 {
-	# Run one test in a protected environment catching errors and warnings
-	# and preparing a suitable context
+	## Run one test in a protected environment catching errors and warnings
+	## and preparing a suitable context
 	name <- sub("^test\\.(.+)\\.$", "\\1", test)
 
-	# The context is written in the .Log, but previous context is saved
-	# and restored on return
+	## The context is written in the .Log, but previous context is saved
+	## and restored on return
 	.Log <- Log()	# Make sure that .Log exists, or create a new one
 	oContext <- c(Unit = .Log$..Unit, Obj = .Log$..Obj, File = .Log$..File,
 		Msg = .Log$..Msg, Tag = .Log$..Tag)
@@ -365,7 +360,7 @@ function (x, envir, test, objfile = "", unit = "", tag = "", msg = "")
 	.Log$..File <- objfile 			# Where is the code source of 'name'?
 	.Log$..Msg <- paste(msg, collapse = "\n") # Message for this test
 	.Log$..Tag <- tag 				# A tag in objfile to locate code
-	# Define the test and save possible existing definition to restore it
+	## Define the test and save possible existing definition to restore it
 	if (exists("..Test", envir = .Log, inherits = FALSE)) {
 		oTest <- .Log$..Test
 		on.exit(.Log$..Test <- oTest, add = TRUE)
@@ -373,42 +368,42 @@ function (x, envir, test, objfile = "", unit = "", tag = "", msg = "")
 	.Log$..Test <- test 			# Define the name of the test
 
 	if (missing(envir)) {
-		# The environment where the test is run
+		## The environment where the test is run
 		envir <- new.env(parent = .GlobalEnv)
 		envir[[test]] <- x 					# A copy of the test code
 		envir$.setUp <- function() {}		# Fake .setUp
 		envir$.tearDown <- function() {}	# Fake .tearDown
 	}
-	# We need this installed in our sandbox .TestEnv to run the test
+	## We need this installed in our sandbox .TestEnv to run the test
 	envir$.LogWarnings <- list() # A list to collect warnings
 
-	# Clear the corresponding log, if it exists
+	## Clear the corresponding log, if it exists
 	if (exists(test, envir = .Log, inherits = FALSE))
 		rm(list = test, envir = .Log)
 
-	# Evaluate the test function in .testEnv, catching errors
+	## Evaluate the test function in .testEnv, catching errors
 	owarn <- getOption("warn")
 	on.exit(options(warn = owarn), add = TRUE)
 	if (isTRUE(getOption("svUnit.StopOnWarning"))) nwarn <- 2 else nwarn <- -1
 	options(warn = nwarn)
 
-	# Evaluate the test function in the .TestEnv environment
+	## Evaluate the test function in the .TestEnv environment
 	cmd <- paste("evalq(.LogRes <- try( { .setUp(); ", test,
 		"(); .tearDown() }, silent = TRUE), envir = envir)", sep = "")
 	eval(parse(text = cmd))
 
-	# Analyze error => is it a deactivation or error in the code?
+	## Analyze error => is it a deactivation or error in the code?
 	if (inherits(Res <- envir$.LogRes, "try-error")) {
-		# We record this as a test returning **ERROR** or DEACTIVATED
+		## We record this as a test returning **ERROR** or DEACTIVATED
 		.logTest(0, test)
-		# Is it because we encountered a DEACTIVATED() command or something else?
+		## Did we encountered a DEACTIVATED() command or something else?
 		if (regexpr("DEACTIVATED\\(", Res) > -1) {
 			Msg <- sub("^[^:]+: *", "", as.character(Res))
 			Msg <- sub("\n$", "", Msg)
 			.logTestData(test, msg = Msg, call = "", timing = NA,
 				val = -2, res = "\n")
 		} else {
-			# This is an error (something wrong with the code in the test fun)
+			## This is an error (something wrong with the code in the test fun)
 			.logTestData(test, msg = "", call = deparse(sys.call()),
 				timing = NA, val = -1, res = paste(Res, collapse = "\n"))
 		}
@@ -416,12 +411,10 @@ function (x, envir, test, objfile = "", unit = "", tag = "", msg = "")
 	return(test)
 }
 
-".assignTemp" <-
-function (x, value)
+.assignTemp <- function (x, value)
     assign(x, value, envir = .TempEnv())
 
-".getTemp" <-
-function (x, default = character(0))
+.getTemp <- function (x, default = character(0))
 {
     if  (exists(x, envir = .TempEnv(), inherits = FALSE)) {
         return(get(x, envir = .TempEnv(), inherits = FALSE))
@@ -430,8 +423,7 @@ function (x, default = character(0))
     }
 }
 
-".TempEnv" <-
-function ()
+.TempEnv <- function ()
 {
     pos <-  match("TempEnv", search())
     if (is.na(pos)) { # Must create it

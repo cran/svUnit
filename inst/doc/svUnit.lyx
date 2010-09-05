@@ -71,7 +71,7 @@ svUnit - A framework for unit testing in R
 \end_layout
 
 \begin_layout Date
-Version 0.7-2, 2010-05-17
+Version 0.7-3, 2010-09-05
 \end_layout
 
 \begin_layout Author
@@ -160,7 +160,7 @@ Once a test fails, the checking process is interrupted.
 
 \begin_layout Itemize
 There is no way to choose one or several tests selectively: all are run
- or not (depending on command line options) during package testing.
+ or not (depending on command line options) during package checking.
 \end_layout
 
 \begin_layout Itemize
@@ -579,7 +579,7 @@ RUnit
 \end_inset
 
  is, there is no tools to integrate the test suite in a given development
- environment (IDE) or graphical user interface (GUI).
+ environment (IDE) or graphical user interface (GUI), as far as we know.
  In particular, there is no real-time reporting mechanism used to easy the
  
 \emph on
@@ -767,7 +767,7 @@ sapply()
 
 \end_inset
 
- procedures to extract its content.
+ procedures to extract some content.
  Finally, the concept of test units as sourceable files on disk is a nice
  idea, but it is too rigid for quick writing test cases for objects not
  associated (yet) with an 
@@ -883,7 +883,7 @@ http://www.sciviews.org/SciViews-K
 
 \end_inset
 
-), on top of Komodo Edit (
+), on top of Komodo Edit or IDE (
 \begin_inset Flex URL
 status collapsed
 
@@ -906,8 +906,8 @@ svUnit
 
 \end_inset
 
- from any GUI/IDE, and the Komodo Edit implementation could be used as an
- example to program similar integration panels for other 
+ from any GUI/IDE, and the Komodo Edit/IDE implementation could be used
+ as an example to program similar integration panels for other 
 \begin_inset Flex R
 status collapsed
 
@@ -1096,7 +1096,7 @@ status collapsed
 
  1.9.0.
  However, if you would like to use its interactive mode in a GUI editor,
- you must also install Komodo Edit and 
+ you must also install Komodo Edit or Komodo IDE and 
 \begin_inset Flex SciViews
 status collapsed
 
@@ -1107,7 +1107,7 @@ status collapsed
 \end_inset
 
 -K.
- The procedure is explaned at 
+ The procedure is explaned here: 
 \begin_inset Flex URL
 status collapsed
 
@@ -1168,12 +1168,12 @@ test(Square) <- function () {
 
 \begin_layout Plain Layout
 
-	checkEqualsNumeric(10, Square(3))	 # This intentionally fails
+	checkEqualsNumeric(10, Square(3))   # This intentionally fails
 \end_layout
 
 \begin_layout Plain Layout
 
-	checkEqualsNumeric(9, SSSquare(3))	# This raises error
+	checkEqualsNumeric(9, SSSquare(3))  # This raises error
 \end_layout
 
 \begin_layout Plain Layout
@@ -1270,7 +1270,7 @@ Overview of svUnit
 \begin_layout Standard
 You ensure that code you write in your 
 \begin_inset Flex R
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -1370,7 +1370,7 @@ library(svUnit)
 
 \begin_layout Plain Layout
 
-# Create two R functions that include their own test cases
+## Create two R functions that include their own test cases
 \end_layout
 
 \begin_layout Plain Layout
@@ -1443,7 +1443,7 @@ test(Cube) <- function () {
 
 \begin_layout Plain Layout
 
-# Add a separate test case
+## Add a separate test case
 \end_layout
 
 \begin_layout Plain Layout
@@ -1458,12 +1458,12 @@ test_Integrate <- svTest(function () {
 
 \begin_layout Plain Layout
 
-	v <- c(1, 2, 3)    # The reference
+	v <- c(1, 2, 3)  # The reference
 \end_layout
 
 \begin_layout Plain Layout
 
-	w <- 1:3           # The value to compare to the reference
+	w <- 1:3         # The value to compare to the reference
 \end_layout
 
 \begin_layout Plain Layout
@@ -1607,11 +1607,11 @@ svUnit
 
 \end_inset
 
- is making the difference between a test that 
+ is making the distinction between a test that 
 \series bold
 fails
 \series default
- (the code is run correctly, but the result is different what was expected)
+ (the code is run correctly, but the result is different from what was expected)
  and code that raises 
 \series bold
 error
@@ -1819,7 +1819,7 @@ c(8, 27)
 \end_inset
 
 .
- This (misspecified) test shows how 
+ This test shows how 
 \begin_inset Flex CharStyle:Pkg
 status collapsed
 
@@ -2544,7 +2544,7 @@ status open
 
 \begin_layout Plain Layout
 
-# Clear test exclusion list for running all test suites
+## Clear test exclusion list for running all test suites
 \end_layout
 
 \begin_layout Plain Layout
@@ -2554,7 +2554,7 @@ options(svUnit.excludeList = NULL)
 
 \begin_layout Plain Layout
 
-# Clear the logger
+## Clear the logger
 \end_layout
 
 \begin_layout Plain Layout
@@ -2564,7 +2564,7 @@ clearLog()
 
 \begin_layout Plain Layout
 
-# Run all currently defined tests
+## Run all currently defined tests
 \end_layout
 
 \begin_layout Plain Layout
@@ -2574,7 +2574,7 @@ runTest(svSuiteList(), name = "AllTests")
 
 \begin_layout Plain Layout
 
-# Get some statistics
+## Get some statistics
 \end_layout
 
 \begin_layout Plain Layout
@@ -2584,7 +2584,7 @@ stats(Log())[, 1:3]
 
 \begin_layout Plain Layout
 
-# A slightly different presentation than with print
+## A slightly different presentation than with print
 \end_layout
 
 \begin_layout Plain Layout
@@ -2594,7 +2594,7 @@ summary(Log())
 
 \begin_layout Plain Layout
 
-# Metadata collected on the machine where tests are run
+## Metadata collected on the machine where tests are run
 \end_layout
 
 \begin_layout Plain Layout
@@ -2604,7 +2604,7 @@ metadata(Log())
 
 \begin_layout Plain Layout
 
-# List content of the log
+## List content of the log
 \end_layout
 
 \begin_layout Plain Layout
@@ -2913,7 +2913,7 @@ test_function <- function () {
 
 \begin_layout Plain Layout
 
-# Turn this function into a test
+## Turn this function into a test
 \end_layout
 
 \begin_layout Plain Layout
@@ -2969,7 +2969,7 @@ svTest
 \end_inset
 
  object, is allowed to live on its own (for instance, in the user's workspace,
- or anywhere you like.
+ or anywhere you like).
  It can be defined in a 
 \begin_inset Flex R
 status collapsed
@@ -3001,7 +3001,7 @@ RUnit
 
 \end_inset
 
- where test must always be located in a unit test).
+ where test must always be located in a unit test file on disk).
  In 
 \begin_inset Flex CharStyle:Pkg
 status collapsed
@@ -3132,7 +3132,7 @@ status open
 
 \begin_layout Plain Layout
 
-# A very simple function
+## A very simple function
 \end_layout
 
 \begin_layout Plain Layout
@@ -3146,7 +3146,7 @@ Square <- function (x) return(x^2)
 
 \begin_layout Plain Layout
 
-# A test case to associate with the Square() function
+## A test case to associate with the Square() function
 \end_layout
 
 \begin_layout Plain Layout
@@ -3363,17 +3363,7 @@ svUnit
 \end_inset
 
 , one can define such test units, and they are made code compatible between
- the two implementations (at least for version 0.4-17 of 
-\begin_inset Flex CharStyle:Pkg
-status collapsed
-
-\begin_layout Plain Layout
-RUnit
-\end_layout
-
-\end_inset
-
-).
+ the two implementations.
 \end_layout
 
 \begin_layout Standard
@@ -3478,7 +3468,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<>>=
+<<eval = FALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -3591,8 +3581,8 @@ status collapsed
 
  functions are constructed automatically for you.
  They specify the context of these tests.
- This context is used, for instance, by the GUI in Komodo to locate the
- test function and the code being tested.
+ This context is used, for instance, by the GUI in Komodo Edit/IDE to locate
+ the test function and the code being tested.
 \end_layout
 
 \begin_layout LyX-Code
@@ -4000,7 +3990,7 @@ R CMD check
 \end_inset
 
  process of your packages.
- You do thit by means of examples in a help page (we prefer to use 
+ You do this by means of examples in a help page (we prefer to use 
 \series bold
 examples
 \series default
@@ -4106,12 +4096,12 @@ status collapsed
 status collapsed
 
 \begin_layout Plain Layout
-unitTests.Rd
+unitTests.<mypackage>.Rd
 \end_layout
 
 \end_inset
 
- (or whatever name you prefer).
+ where <mypackage> is the name of your package (or whatever name you prefer).
 \end_layout
 
 \begin_layout Itemize
@@ -4130,7 +4120,7 @@ status collapsed
 status collapsed
 
 \begin_layout Plain Layout
-unitTests.myPKG
+unitTests.<mypackage>
 \end_layout
 
 \end_inset
@@ -4214,13 +4204,23 @@ status collapsed
 
 \end_inset
 
- file should looks like:
+ file should looks like (exemple of the 
+\begin_inset Flex CharStyle:Pkg
+status collapsed
+
+\begin_layout Plain Layout
+svUnit
+\end_layout
+
+\end_inset
+
+ package):
 \end_layout
 
 \begin_layout LyX-Code
 
 \backslash
-name{unitTests}
+name{unitTests.svUnit}
 \end_layout
 
 \begin_layout LyX-Code
@@ -4304,81 +4304,27 @@ examples{
 \end_layout
 
 \begin_layout LyX-Code
-library(svUnit) 
+if (require(svUnit)) { 
 \end_layout
 
 \begin_layout LyX-Code
-# Make sure to clear log first
+    clearLog()
 \end_layout
 
 \begin_layout LyX-Code
-clearLog()
+    runTest(svSuite("package:svUnit"), "svUnit")
 \end_layout
 
 \begin_layout LyX-Code
-
+    ## Possibly run other tests here...
 \end_layout
 
 \begin_layout LyX-Code
-# Run all test units defined in 'svUnit' package
-\end_layout
-
-\begin_layout LyX-Code
-(runTest(svSuite("package:svUnit"), "svUnit")) 
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-
-\backslash
-donttest{ 
-\end_layout
-
-\begin_layout LyX-Code
-# These tests are not run in R CMD check but will be with
-\end_layout
-
-\begin_layout LyX-Code
-# example(unitTests.svUnit)
-\end_layout
-
-\begin_layout LyX-Code
-# Run all test units defined in
-\end_layout
-
-\begin_layout LyX-Code
-# the /unitTests/VirtualClass subdir
-\end_layout
-
-\begin_layout LyX-Code
-(runTest(svSuite("package:svUnit (VirtualClass)"),
-\end_layout
-
-\begin_layout LyX-Code
-    "VirtualClass"))
+    errorLog()
 \end_layout
 
 \begin_layout LyX-Code
 }
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-# Check errors at the end of the process
-\end_layout
-
-\begin_layout LyX-Code
-#(required to interrupt R CMD check)
-\end_layout
-
-\begin_layout LyX-Code
-errorLog()
 \end_layout
 
 \begin_layout LyX-Code
@@ -4396,7 +4342,152 @@ keyword{utilities}
 \end_layout
 
 \begin_layout Standard
-Also, this mechanisms, associated with examples, provides a very convenient
+Note, however, that if the package 
+\begin_inset Flex CharStyle:Pkg
+status collapsed
+
+\begin_layout Plain Layout
+svUnit
+\end_layout
+
+\end_inset
+
+ is not available on the computer where you run 
+\begin_inset Flex CharStyle:Command
+status collapsed
+
+\begin_layout Plain Layout
+
+R CMD check
+\end_layout
+
+\end_inset
+
+, your tests are silently ignored (
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+require()
+\end_layout
+
+\end_inset
+
+ issues a warning, but that does not prevent the checking process to continue).
+ This is an intended feature in order to allow compilation of your package
+ without requiring 
+\begin_inset Flex CharStyle:Pkg
+status collapsed
+
+\begin_layout Plain Layout
+svUnit
+\end_layout
+
+\end_inset
+
+.
+ Hence, dependence to 
+\begin_inset Flex CharStyle:Pkg
+status collapsed
+
+\begin_layout Plain Layout
+svUnit
+\end_layout
+
+\end_inset
+
+ is less strict and also allows you to check your tests using 
+\begin_inset Flex CharStyle:Pkg
+status collapsed
+
+\begin_layout Plain Layout
+RUnit
+\end_layout
+
+\end_inset
+
+ (but you have to write a dedicated function for that).
+ Still to keep such a less strict dependence on 
+\begin_inset Flex CharStyle:Pkg
+status collapsed
+
+\begin_layout Plain Layout
+svUnit
+\end_layout
+
+\end_inset
+
+, you should add 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+svUnit
+\end_layout
+
+\end_inset
+
+ in the 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+Suggests:
+\end_layout
+
+\end_inset
+
+ field in the 
+\begin_inset Flex CharStyle:File
+status collapsed
+
+\begin_layout Plain Layout
+DESCRIPTION
+\end_layout
+
+\end_inset
+
+ file of your package, not in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+Depends:
+\end_layout
+
+\end_inset
+
+ or 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+Imports:
+\end_layout
+
+\end_inset
+
+ fields (except if you use 
+\begin_inset Flex CharStyle:Pkg
+status collapsed
+
+\begin_layout Plain Layout
+svUnit
+\end_layout
+
+\end_inset
+
+ for other purposes that testing your package using the mechanism discussed
+ here, of course.
+\end_layout
+
+\begin_layout Standard
+Also, this approach, associated with examples, provides a very convenient
  and easy way to test a package from the command line in an interactive
  session by running:
 \end_layout
@@ -4409,11 +4500,6 @@ status open
 \begin_layout Plain Layout
 
 <<>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-library(svUnit)
 \end_layout
 
 \begin_layout Plain Layout
@@ -4541,7 +4627,7 @@ myPkg
 \end_inset
 
 .
- Of course, you will be able to add also test units defined in custom directorie
+ Of course, you will be able to also add test units defined in custom directorie
 s, outside of 
 \begin_inset Flex R
 status collapsed
@@ -4611,7 +4697,8 @@ svSuite
 \end_layout
 
 \begin_layout Standard
-Before we apply all this, you should also know one more function: 
+Before we apply all this, you should also know the existence of one more
+ function: 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -4705,7 +4792,7 @@ status open
 
 \begin_layout Plain Layout
 
-# Reset default exclusion list
+## Reset default exclusion list
 \end_layout
 
 \begin_layout Plain Layout
@@ -4715,7 +4802,7 @@ options(svUnit.excludeList = c("package:sv", "package:RUnit"))
 
 \begin_layout Plain Layout
 
-# List all currently available tests 
+## List all currently available tests 
 \end_layout
 
 \begin_layout Plain Layout
@@ -4791,7 +4878,7 @@ status open
 
 \begin_layout Plain Layout
 
-# Clear exclusion list
+## Clear exclusion list
 \end_layout
 
 \begin_layout Plain Layout
@@ -4886,7 +4973,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<>>=
+<<eval = FALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -4930,8 +5017,8 @@ status collapsed
 
 \end_inset
 
- temporary directory, and which coleects all tests in the user's workspace
- (either as 
+ temporary directory, and which collects together all tests in the user's
+ workspace (either as 
 \begin_inset Flex CharStyle:Var
 status collapsed
 
@@ -5032,11 +5119,11 @@ svUnit
 \end_layout
 
 \begin_layout Section
-Using svUnit with Komodo/SciViews
+Using svUnit with SciViews Komodo
 \end_layout
 
 \begin_layout Standard
-If you use the Komodo GUI (see 
+If you use the SciViews Komodo GUI (see 
 \begin_inset Flex URL
 status collapsed
 
@@ -5077,7 +5164,7 @@ status collapsed
 
 \end_inset
 
- is started from within Komodo (with the 
+ is started from within Komodo Edit or IDE (with the 
 \begin_inset Flex SciViews
 status open
 

@@ -1,18 +1,17 @@
-"svSuite" <-
-function (tests)
+svSuite <- function (tests)
 {
-	# Check provided tests and build a 'svSuite' object
+	## Check provided tests and build a 'svSuite' object
 	tests <- as.character(tests)
-	# Remove NAs and empty strings ("") from tests
+	## Remove NAs and empty strings ("") from tests
 	tests <- tests[!is.na(tests) & !(tests == "")]
 	if (length(tests) > 0) {
-		# Tests must be character strings like:
-		# * package:PKG
-		# * package:PKG (TESTSUITE)
-		# * dir:MYDIR
-		# * test(OBJ) where OBJ is any object with a 'test' attribute
-		# * OBJ being a 'svTest' object (with non "exotic" name!),
-		# Syntax is checked, but not existence/validity of corresponding tests!
+		## Tests must be character strings like:
+		## * package:PKG
+		## * package:PKG (TESTSUITE)
+		## * dir:MYDIR
+		## * test(OBJ) where OBJ is any object with a 'test' attribute
+		## * OBJ being a 'svTest' object (with non "exotic" name!),
+		## Syntax is checked, but not existence/validity of corresponding tests!
 		check1 <- (regexpr("^package:[a-zA-Z][a-zA-Z._0-9]*$", tests) > -1)
 		check2 <- (regexpr("^package:[a-zA-Z][a-zA-Z._0-9]* *\\(.+\\)$", tests) > -1)
 		check3 <- (regexpr("^dir:.+", tests) > -1)
@@ -22,21 +21,18 @@ function (tests)
 		if (any(wrong))
 			stop("Wrong 'tests' data: must be 'package:PKG', 'package:PKG (SUITE)',\n'dir:MYDIR', 'test(OBJ)' or 'OBJ'")
 	}
-	# This is a 'svSuite' object subclassing 'character'
+	## This is a 'svSuite' object subclassing 'character'
 	class(tests) <- c("svSuite", "character")
 	return(tests)
 }
 
-"as.svSuite" <-
-function (x)
+as.svSuite <- function (x)
 	return(svSuite(x))
 
-"is.svSuite" <-
-function (x)
+is.svSuite <- function (x)
 	return(inherits(x, "svSuite"))
 
-"print.svSuite" <-
-function (x, ...)
+print.svSuite <- function (x, ...)
 {
 	if (!is.svSuite(x))
 		stop("'x' must be a 'svSuite' object")
@@ -44,7 +40,7 @@ function (x, ...)
 		cat("An empty svUnit test suite\n")
 	} else {
 		cat("A svUnit test suite definition with:\n")
-		# Separate unit tests from tests embedded in objects
+		## Separate unit tests from tests embedded in objects
 		isSuite <- regexpr("^[package:|dir:]", x) > -1
 		if (any(isSuite)) {
 			Suites <- x[isSuite]
@@ -65,14 +61,13 @@ function (x, ...)
 	return(invisible(x))
 }
 
-"svSuiteList" <-
-function (packages = TRUE, objects = TRUE, dirs = getOption("svUnit.dirs"),
+svSuiteList <- function (packages = TRUE, objects = TRUE, dirs = getOption("svUnit.dirs"),
 	excludeList = getOption("svUnit.excludeList"), pos = .GlobalEnv,
 	loadPackages = FALSE)
 {
-	# List unit test (1) in loaded packages (2) in objects in pos and (3) in
-	# directories, possibly filtering them using an exclusion list
-	# Note: Komodo should list test unit files in loaded projects too!
+	## List unit test (1) in loaded packages (2) in objects in pos and (3) in
+	## directories, possibly filtering them using an exclusion list
+	## Note: Komodo should list test unit files in loaded projects too!
 	if (length(packages) < 1)
 		stop("'package' cannot have zero length")
 	if (length(objects) < 1)
@@ -80,7 +75,7 @@ function (packages = TRUE, objects = TRUE, dirs = getOption("svUnit.dirs"),
 
 	items <- character()
 
-	# 1) Unit test files in loaded packages
+	## 1) Unit test files in loaded packages
 	if (packages[1] != FALSE) {
 		if (is.character(packages)) {	# We assume it is a list of packages
 			Pkgs <- packages
@@ -88,7 +83,7 @@ function (packages = TRUE, objects = TRUE, dirs = getOption("svUnit.dirs"),
 			Pkgs <- .packages()
 		}
 		for (Pkg in Pkgs) {
-			# Look for test units in the package
+			## Look for test units in the package
 			path <- system.file(package = Pkg, "unitTests")
 			if (path != "" && file.info(path)$isdir) {
 				pkgname <- paste("package", Pkg, sep = ":")
@@ -103,7 +98,7 @@ function (packages = TRUE, objects = TRUE, dirs = getOption("svUnit.dirs"),
 		}
 	}
 
-	# 2) Tests embedded in objects located in 'pos' environment
+	## 2) Tests embedded in objects located in 'pos' environment
 	if (objects[1] != FALSE) {
 		envir = as.environment(pos)
 		if (is.character(objects)) {
@@ -135,10 +130,10 @@ function (packages = TRUE, objects = TRUE, dirs = getOption("svUnit.dirs"),
 		items <- c(items, sort(tests))
 	}
 
-	# 3) Additional directories (check that they are valid and existing dirs)
+	## 3) Additional directories (check that they are valid and existing dirs)
 	if (!is.null(dirs)) {
-		# Check if each entry exists as a directory, exclude it if not
-		# Prepend "dir:" to tag them as additional directories
+		## Check if each entry exists as a directory, exclude it if not
+		## Prepend "dir:" to tag them as additional directories
 		Dirs <- character()
 		for (Dir in dirs)
 			if (file.exists(Dir) && file.info(Dir)$isdir)
@@ -146,15 +141,15 @@ function (packages = TRUE, objects = TRUE, dirs = getOption("svUnit.dirs"),
 		items <- c(items, sort(Dirs))
 	}
 
-	# Filter the resulting list with 'excludeList'
+	## Filter the resulting list with 'excludeList'
 	if (!is.null(excludeList)) {
 		for (pattern in excludeList)
 			items <- items[regexpr(pattern, items) == -1]
 	}
 
-	# Do we load the package?
+	## Do we load the package?
 	if (loadPackages) {
-		# Get a list of packages we need for the suite
+		## Get a list of packages we need for the suite
 		Pkgs <- items[regexpr("^package:", items)]
 		PkgsSrch <- unique(sub(" +\\(.+$", "", Pkgs))
 		l <- length(PkgsSrch)
@@ -172,24 +167,24 @@ function (packages = TRUE, objects = TRUE, dirs = getOption("svUnit.dirs"),
 		}
 	}
 
-	# Make it a 'svSuite' object subclassing 'character'
+	## Make it a 'svSuite' object subclassing 'character'
 	class(items) <- c("svSuite", "character")
 	return(items)
 }
 
-"makeUnit.svSuite" <-
-function (x, name = make.names(deparse(substitute(x))), dir = tempdir(),
-	objfile = "", codeSetUp = NULL, codeTearDown = NULL, pos = .GlobalEnv, ...)
+makeUnit.svSuite <- function (x, name = make.names(deparse(substitute(x))),
+dir = tempdir(), objfile = "", codeSetUp = NULL, codeTearDown = NULL,
+pos = .GlobalEnv, ...)
 {
-	# Take an 'svSuite' object and make a unit from its function tests
-	# that are not written yet in a test unit in a file
-	# They are saved in a file named runit<name>.R in 'dir'
+	## Take an 'svSuite' object and make a unit from its function tests
+	## that are not written yet in a test unit in a file
+	## They are saved in a file named runit<name>.R in 'dir'
 	if (!is.svSuite(x))
 		stop("'x' must be a 'svSuite' object")
 	name <- as.character(name)[1]
-	# Under Windows, we transform \\ into /
+	## Under Windows, we transform \\ into /
 	dir <- gsub("\\\\", "/", as.character(dir)[1])
-	# Collect all items that are not 'package:...' or 'dir:...'
+	## Collect all items that are not 'package:...' or 'dir:...'
 	isObj <- regexpr("^[package:|dir:]", x) == -1
 	Objs <- sub("^test[(](.+)[)]$", "\\1", x[isObj])
 	if (length(Objs) == 0) { # No objects, return NULL
@@ -204,18 +199,18 @@ function (x, name = make.names(deparse(substitute(x))), dir = tempdir(),
 	return(Unit)
 }
 
-"runTest.svSuite" <-
-function (x, name = make.names(deparse(substitute(x))), unitname = NULL, ...)
+runTest.svSuite <- function (x, name = make.names(deparse(substitute(x))),
+unitname = NULL, ...)
 {
-	# Compile and run the test for this 'svSuite' object
+	## Compile and run the test for this 'svSuite' object
 	if (!is.svSuite(x))
 		stop("'x' must be a 'svSuite' object")
 	name <- as.character(name[1])
 
-	# Decode tests contained in x
+	## Decode tests contained in x
 	tests <- as.character(x)
 	dirs <- character()
-	# Package suites...
+	## Package suites...
 	isPkg <- regexpr("^package:", tests) > -1
 	if (any(isPkg)) {
 		Pkgs <- tests[isPkg]
@@ -232,32 +227,32 @@ function (x, name = make.names(deparse(substitute(x))), unitname = NULL, ...)
 		}
 	}
 
-	# Add directories, and possibly make a temporary unit for test objects
+	## Add directories, and possibly make a temporary unit for test objects
 	if (any(!isPkg)) {
 		tests <- tests[!isPkg]
-		# Directories
+		## Directories
 		isDir <- regexpr("^dir:", tests) > -1
 		if (any(isDir))
 			dirs <- c(sub("^dir:", "", tests[isDir]), dirs)
-		# Objects
+		## Objects
 		if (any(!isDir)) {
-			# make a temporary unit for the tests of these objects
+			## Make a temporary unit for the tests of these objects
 			if (!is.null(Unit <- makeUnit(x, name = name))) {
-				# Add this path to dirs
+				## Add this path to dirs
 				dirs <- c(dirname(Unit), dirs)
 			}
 		}
 	}
 
-	# Now, list all files in these dirs with name being runit*.R
+	## Now, list all files in these dirs with name being runit*.R
 	files <- character()
 	for (dir in dirs)
 		files <- c(files, list.files(dir, pattern = "^runit.+\\.[rR]$",
 			full.names = TRUE))
 	if (length(files) == 0) return(NULL)	# Nothing to run!	
-	# Under Windows, transform all \\ into / in the file names
+	## Under Windows, transform all \\ into / in the file names
 	files <- gsub("\\\\", "/", files)
-	# Added by Thomas Wurtzler to control which unit test to run
+	## Added by Thomas Wurtzler to control which unit test to run
 	if (!is.null(unitname)) {
 		unitname <- deparse(substitute(unitname))
 		testNames <- gsub("^.*runit(.+)\\.[rR]$", "\\1", files)
@@ -268,38 +263,38 @@ function (x, name = make.names(deparse(substitute(x))), unitname = NULL, ...)
 			return(NULL)	
 		}
 	}
-	# Run this test suite now, that is, source each file in .TestSuiteEnv
-	# and run each testxxx function in it, using .setUp and .tearDown too
-	# Record the list of tests
+	## Run this test suite now, that is, source each file in .TestSuiteEnv
+	## and run each testxxx function in it, using .setUp and .tearDown too
+	## Record the list of tests
 	.lastSuite <- list()
 	for (file in files)
 		.lastSuite[[basename(file)]] <- list(file = file)
 	.Log <- Log()
 	.Log$.lastSuite <- .lastSuite
 
-	# Source each runit*.R file in turn
+	## Source each runit*.R file in turn
 	for (unit in names(.lastSuite)) {
-		# Create a new environment for this suite (created in .GlobalEnv so
-		# that we can inspect it in case of stop on error)
+		## Create a new environment for this suite (created in .GlobalEnv so
+		## that we can inspect it in case of stop on error)
 		.TestSuiteEnv <<- new.env(parent = .GlobalEnv)
-		# Source the corresponding file
+		## Source the corresponding file
 		Unit <- .lastSuite[[unit]]$file
 		sys.source(Unit, envir = .TestSuiteEnv)
-		# Make sure there are .setUp() and .tearDown() functions
+		## Make sure there are .setUp() and .tearDown() functions
 		if (!exists(".setUp", envir = .TestSuiteEnv, mode = "function",
 			inherits = FALSE))
 			.TestSuiteEnv$.setUp <- function() {}
 		if (!exists(".tearDown", envir = .TestSuiteEnv, mode = "function",
 			inherits = FALSE))
 			.TestSuiteEnv$.tearDown <- function() {}
-		# List all test files in the unit
+		## List all test files in the unit
 		tests <- ls(.TestSuiteEnv, pattern = "^test.+$")
-		# Keep only 'test*' objects that are function
+		## Keep only 'test*' objects that are function
 		keep <- unlist(lapply(tests, function(n) exists(n,
 			envir = .TestSuiteEnv, mode = "function", inherits = FALSE)))
 		tests <- tests[keep]
 		.Log$.lastSuite[[unit]]$tests <- tests
-		# Run each test in turn
+		## Run each test in turn
 		for (test in tests) {
 			.runTest(envir = .TestSuiteEnv, test = test, unit = Unit)
 		}

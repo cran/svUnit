@@ -1,22 +1,22 @@
-# runitsvTest.R test suite
-# by Ph. Grosjean <phgrosjean@sciviews.org>
-# run it simply by example(unitTests.svUnit)
+## runitsvTest.R test suite
+## by Ph. Grosjean <phgrosjean@sciviews.org>
+## Run it simply by example(unitTests.svUnit)
 
 ## Create a few objects we need for tests
 
-# An R object (matrix)
+## An R object (matrix)
 mat <- matrix(rnorm(4), ncol = 2)
 
-# Create very simple test cases for matrix 'mat'
+## Create very simple test cases for matrix 'mat'
 testmat <- svTest(function () {
 	checkEqualsNumeric(2, nrow(mat))
 	checkTrue(is.numeric(mat))
 })
 
-# An example function without test case
+## An example function without test case
 foo <- function(x) return(x)
 
-# Another function with a test associated
+## Another function with a test associated
 bar <- function(x) return(x^2)
 testbar <- svTest(function () {
 	checkEqualsNumeric(4, bar(2))
@@ -24,17 +24,15 @@ testbar <- svTest(function () {
 })
 test(bar) <- testbar
 
-
 ## The test cases
-
 .setUp <- function () {
-	# Executed before each test function
-	# ...
+	## Executed before each test function
+	## ...
 }
 
 .tearDown <- function () {
-	# Executed after each test function
-	# ...
+	## Executed after each test function
+	## ...
 }
 
 testis.test <- function () {
@@ -51,11 +49,11 @@ testis.test <- function () {
 	if (exists(".Log")) .Log$..Obj <- "test<-" 		# Switch the context to `test<-`()
 	checkException(test(foo) <- "x",				"Strange value to assign as 'test'")
 	checkException(test(foo) <- function(y) y, 		"Try assign a function with arguments")
-	# Add test cases to an object
+	## Add test cases to an object
 	mat2 <- mat
 	checkTrue(is.test(test(mat2) <- testmat), 		"'mat2' valid test case association")
 	checkIdentical(testmat, test(mat2),				"test of 'mat2' identical to 'testmat'")
-	# Strange,... but allowed
+	## Strange,... but allowed
 	test(testbar) <- testbar
 	checkIdentical(testbar, test(testbar),			"Assigning test cases to oneself")
 
@@ -88,8 +86,8 @@ testsvTest <- function () {
 
 testrunTest <- function () {
 	checkTrue(inherits(runTest(testbar), "svTestData"), 	"result of runTest(testbar) is 'svTestData'")
-	# Following tests fail currently for reasons I haven't spotted yet, but runTest() works wine
-	# outside of these tests... So, I deactivate them
+	## Following tests fail currently for reasons I haven't spotted yet, but runTest() works wine
+	## outside of these tests... So, I deactivate them
 	DEACTIVATED("runTest(bar) does not work inside test functions")
 	checkTrue(inherits(runTest(test(bar)), "svTestData"), 	"result of runTest(test(bar)) is 'svTestData'")
 	checkTrue(inherits(runTest(bar), "svTestData"), 		"result of runTest(bar) is 'svTestData'")

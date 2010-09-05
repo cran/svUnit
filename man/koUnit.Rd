@@ -29,7 +29,7 @@ koUnit_version()
 \arguments{
   \item{state}{ \code{TRUE} or \code{FALSE}, or missing for
   \code{koUnit_showRUnitPane()}, in this case, the R Unit pane visibility is
-    toggled }
+  toggled. }
 }
 
 \value{
@@ -55,25 +55,27 @@ koUnit_version()
 
 \examples{
 \dontrun{
-# Make sure R is communicating with Komodo before use, see ?koCmd in svGUI
+## Make sure R is communicating with Komodo before use, see ?koCmd in svGUI
 koUnit_version()
 
-# Toggle visibility of the R Unit pane in Komodo twice
+## Toggle visibility of the R Unit pane in Komodo twice
 koUnit_showRUnitPane()
 koUnit_showRUnitPane()
 
-# Make sure that the R Unit pane is visible
+## Make sure that the R Unit pane is visible
 koUnit_showRUnitPane(TRUE)
 
-# Is the test unit running in auto mode?
+## Is the test unit running in auto mode?
 koUnit_isAutoTest()
 
-# Toggle auto test mode off
+## Toggle auto test mode off
 koUnit_setAutoTest(FALSE)
 
-# Run the test units from within Komodo
+## Run the test units from within Komodo
 koUnit_runTest()
 }
 }
 
 \keyword{ utilities }
+
+\concept{ unit testing }

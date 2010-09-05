@@ -35,20 +35,28 @@
 
 \providecommand{\file}[1]{`\textsf{#1}'}
 
-\providecommand{\command}[1]{\texttt{#1}}
+\providecommand{\command}{\bgroup\@noligs\@cmdx}
+\def\@cmdx#1{{\normalfont\texttt{#1}}\egroup}
 
 \providecommand{\pkg}[1]{{\fontseries{b}\selectfont #1}}
 
-\providecommand{\code}[1]{\texttt{#1}}
+{\catcode`\ =\active\global\def\code{\bgroup\@noligs\catcode`\ =\active\let \codespace\@codex}}
+\def\codespace{{ }}
+\def\@codex#1{\normalfont\texttt{#1}\egroup}
 
 \providecommand{\var}[1]{{\normalfont\textsl{#1}}}
 
-\providecommand{\SciViews}[1]{\textsf{Sc\lower.08em\hbox{i}\kern-.03emV\kern-.03em\lower.08em\hbox{i}ews\@#1}}
+\providecommand{\SciViews}[1]{\textsf{\textsl{S}\lower.08em\hbox{ci}\textsl{\kern-.04emV}\kern-.02em\lower.08em\hbox{iews}\@#1}}
 
 \providecommand{\menuitem}[1]{\textsf{\textsc{#1}}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\providecommand{\Prob}{\mathop{\mathrm{P}}}
+\providecommand{\E}{\mathop{\mathrm{E}}}
+\providecommand{\VAR}{\mathop{\mathrm{var}}}
+\providecommand{\COV}{\mathop{\mathrm{cov}}}
+\providecommand{\COR}{\mathop{\mathrm{cor}}}
 \newenvironment{lyxlist}[1]
 {\begin{list}{}
 {\settowidth{\labelwidth}{#1}
@@ -78,7 +86,7 @@
 \title{svUnit - A framework for unit testing in R }
 
 
-\date{Version 0.7-2, 2010-05-17}
+\date{Version 0.7-3, 2010-09-05}
 
 
 \author{Philippe Grosjean (phgrosjean@sciviews.org)}
@@ -105,7 +113,7 @@ independently (for instance, for functions developed separately).
 to correct the bug and launch package checking again... and perhaps
 get caught by the next bug. It is a long and painful process.
 \item There is no way to choose one or several tests selectively: all are
-run or not (depending on command line options) during package testing.
+run or not (depending on command line options) during package checking.
 \item It is very hard, or near to impossible to program in \R{} in a test
 driven development (\emph{write tests first}) with the standard tools
 (\url{http://en.wikipedia.org/wiki/Test- driven_development}). 
@@ -162,12 +170,12 @@ of the code not covered by the test suite (code coverage function
 \end{itemize}
 As complete and nice as \pkg{RUnit} is, there is no tools to integrate
 the test suite in a given development environment (IDE) or graphical
-user interface (GUI). In particular, there is no real-time reporting
-mechanism used to easy the \emph{test-code-simplify} cycle. The way
-tests are implemented and run is left to the user, but the implementation
-suggests that the authors of \pkg{RUnit} mainly target batch execution
-of the tests (for instance, nightly check of code in a server), rather
-that real-time interaction with the tests.
+user interface (GUI), as far as we know. In particular, there is no
+real-time reporting mechanism used to easy the \emph{test-code-simplify}
+cycle. The way tests are implemented and run is left to the user,
+but the implementation suggests that the authors of \pkg{RUnit} mainly
+target batch execution of the tests (for instance, nightly check of
+code in a server), rather that real-time interaction with the tests.
 
 There is also no integration with the \textquotedbl{}regular\textquotedbl{}
 \command{R CMD check} mechanism of \R{} in \pkg{RUnit}. There is
@@ -192,7 +200,7 @@ However, we encountered several difficulties while trying to enhance
 its \var{RUnitTestData} object is optimized for quick testing, but
 not at all for easy reviewing of its content: it is a list of lists
 of lists,... requiring embedded for loop and \code{lapply()} /\code{sapply()}
-procedures to extract its content. Finally, the concept of test units
+procedures to extract some content. Finally, the concept of test units
 as sourceable files on disk is a nice idea, but it is too rigid for
 quick writing test cases for objects not associated (yet) with an
 \R{} packages.
@@ -206,17 +214,17 @@ but the test code run in \pkg{RUnit} or \pkg{svUnit} is interchangeable).
 
 Finally, \pkg{svUnit} is also designed to be integrated in the \SciViews{}
 GUI (\url{http://www.sciviews.org/SciViews-K}), on top of Komodo
-Edit (\url{http://www.activestate.com/komodo_edit}), and to approach
-extreme programming practices with automatic code testing while you
-write it. A rather simple interface is provided to link and pilot
-\pkg{svUnit} from any GUI/IDE, and the Komodo Edit implementation
-could be used as an example to program similar integration panels
-for other \R{} GUIs. \pkg{svUnit} also formats its report with \emph{creole
-wiki} syntax. It is directly readable, but it can also be displayed
-in a much nicer way using any wiki engine compatible with the creole
-wiki language. It is thus rather easy to write test reports in wiki
-servers, possibly through nightly automatic process for your code,
-if you like.
+Edit or IDE (\url{http://www.activestate.com/komodo_edit}), and to
+approach extreme programming practices with automatic code testing
+while you write it. A rather simple interface is provided to link
+and pilot \pkg{svUnit} from any GUI/IDE, and the Komodo Edit/IDE
+implementation could be used as an example to program similar integration
+panels for other \R{} GUIs. \pkg{svUnit} also formats its report
+with \emph{creole wiki} syntax. It is directly readable, but it can
+also be displayed in a much nicer way using any wiki engine compatible
+with the creole wiki language. It is thus rather easy to write test
+reports in wiki servers, possibly through nightly automatic process
+for your code, if you like.
 
 This vignette is a guided tour of \pkg{svUnit}, showing its features
 and the various ways you can use it to test your \R{} code.
@@ -245,8 +253,8 @@ install.packages("svUnit")
 
 This package has no dependence other than \R{} $\geq$ 1.9.0. However,
 if you would like to use its interactive mode in a GUI editor, you
-must also install Komodo Edit and \SciViews{}-K. The procedure is
-explaned at \url{http://www.sciviews.org/SciViews-K}.
+must also install Komodo Edit or Komodo IDE and \SciViews{}-K. The
+procedure is explaned here: \url{http://www.sciviews.org/SciViews-K}.
 
 Once the \pkg{svUnit} package is installed, you can check it is working
 correctly on your machine with the following example code:
@@ -257,8 +265,8 @@ library(svUnit)
 Square <- function (x) return(x^2)
 test(Square) <- function () {
     checkEqualsNumeric(9, Square(3))
-    checkEqualsNumeric(10, Square(3))     # This intentionally fails
-    checkEqualsNumeric(9, SSSquare(3))    # This raises error
+    checkEqualsNumeric(10, Square(3))   # This intentionally fails
+    checkEqualsNumeric(9, SSSquare(3))  # This raises error
     checkEqualsNumeric(c(1, 4, 9), Square(1:3))
     checkException(Square("xx"))
 }
@@ -290,7 +298,7 @@ of any \R{} object, or that check several of them together (so called,
 
 <<>>=
 library(svUnit)
-# Create two R functions that include their own test cases
+## Create two R functions that include their own test cases
 Square <- function (x) return(x^2)
 test(Square) <- function () {
     checkEqualsNumeric(9, Square(3))
@@ -305,11 +313,11 @@ test(Cube) <- function () {
     checkException(Cube("xx"))
 }
 
-# Add a separate test case
+## Add a separate test case
 test_Integrate <- svTest(function () {
     checkTrue(1 < 2, "check1")
-    v <- c(1, 2, 3)    # The reference
-    w <- 1:3           # The value to compare to the reference
+    v <- c(1, 2, 3)  # The reference
+    w <- 1:3         # The value to compare to the reference
     checkEquals(v, w)
 })
 @
@@ -333,11 +341,11 @@ Log()
 @
 
 In this report, you see that all your tests succeed. Note that \pkg{svUnit}
-is making the difference between a test that \textbf{fails} (the code
-is run correctly, but the result is different what was expected) and
-code that raises \textbf{error} (it was not possible to run the test
-because its code is incorrect, or for some other reasons). Note also
-that the function \code{checkException()} is designed to explicitly
+is making the distinction between a test that \textbf{fails} (the
+code is run correctly, but the result is different from what was expected)
+and code that raises \textbf{error} (it was not possible to run the
+test because its code is incorrect, or for some other reasons). Note
+also that the function \code{checkException()} is designed to explicitly
 test code that should \code{stop()} in \R{}%
 \footnote{\code{checkException()} can also track \code{warning()} messages
 with this little trick: first convert all warnings into errors with
@@ -366,8 +374,8 @@ invisibly). But when a test fails, or raises errors, the guilty test(s)
 results are printed. We expected \code{c(8, 28)} (made intentionally
 wrong for the sake of the demonstration) from \code{Cube(2:3)} in
 \code{checkEqualsNumeric(c(8, 28), Cube(2:3))}, and (of course),
-we got \code{c(8, 27)}. This (misspecified) test shows how \pkg{svUnit}
-presents test failures.
+we got \code{c(8, 27)}. This test shows how \pkg{svUnit} presents
+test failures.
 \item The results of the tests on \code{Cube()} are added to the previous
 report. So, it is possible to build rather easily reports that summarize
 tests on several objects, by adding test results in the logger sequentially.
@@ -487,19 +495,19 @@ the logger from the command line, in particular, \code{stats()},
 
 
 <<>>=
-# Clear test exclusion list for running all test suites
+## Clear test exclusion list for running all test suites
 options(svUnit.excludeList = NULL)
-# Clear the logger
+## Clear the logger
 clearLog()
-# Run all currently defined tests
+## Run all currently defined tests
 runTest(svSuiteList(), name = "AllTests")
-# Get some statistics
+## Get some statistics
 stats(Log())[, 1:3]
-# A slightly different presentation than with print
+## A slightly different presentation than with print
 summary(Log())
-# Metadata collected on the machine where tests are run
+## Metadata collected on the machine where tests are run
 metadata(Log())
-# List content of the log
+## List content of the log
 ls(Log())
 @
 
@@ -557,7 +565,7 @@ test_function <- function () {
     w <- 1:3         # The object to compare to the reference
     checkEqualsNumeric(v, w)
 }
-# Turn this function into a test
+## Turn this function into a test
 test_function <- as.svTest(test_function)
 is.svTest(test_function)
 @
@@ -565,12 +573,12 @@ is.svTest(test_function)
 A test function should be made a special object called \var{svTest},
 so that \pkg{svUnit} can recognize it. This \var{svTest} object,
 is allowed to live on its own (for instance, in the user's workspace,
-or anywhere you like. It can be defined in a \R{} script, be saved
+or anywhere you like). It can be defined in a \R{} script, be saved
 in a \file{.RData} file, etc... Note that this is very different
-from \pkg{RUnit} where test must always be located in a unit test).
-In \pkg{svUnit} (not \pkg{RUnit}), you run such a test simply by
-using \code{runTest()}, which returns the results invisibly and add
-it to the logger:
+from \pkg{RUnit} where test must always be located in a unit test
+file on disk). In \pkg{svUnit} (not \pkg{RUnit}), you run such a
+test simply by using \code{runTest()}, which returns the results
+invisibly and add it to the logger:
 
 
 <<>>=
@@ -588,10 +596,10 @@ is simply made using \code{test(myobj) <-}:
 
 
 <<>>=
-# A very simple function
+## A very simple function
 Square <- function (x) return(x^2)
 
-# A test case to associate with the Square() function
+## A test case to associate with the Square() function
 test(Square) <- function () {
     checkEqualsNumeric(9, Square(3))
     checkEqualsNumeric(c(1, 4, 9), Square(1:3))
@@ -635,7 +643,7 @@ test unit should accommodate the well-define organization of a package,
 and should integrate in the already existing testing features of \R{},
 in particular, \command{R CMD check}. In both \pkg{RUnit}, and \pkg{svUnit},
 one can define such test units, and they are made code compatible
-between the two implementations (at least for version 0.4-17 of \pkg{RUnit}).
+between the two implementations.
 
 A test unit is a sourceable text file that contains one or more test
 functions, plus possibly \code{.setUp()} and \code{.tearDown()}
@@ -648,7 +656,7 @@ is how you promote the test associated with our \code{Square()} function
 to a simple test unit containing only one test function:
 
 
-<<>>=
+<<eval = FALSE>>=
 # Create a test unit on disk and view its content
 unit <- makeUnit(Square)
 file.show(unit, delete.file = TRUE)
@@ -661,8 +669,8 @@ with the \code{dir =} argument of \code{makeUnit()} for a more permanent
 record of this test unit file. Note also that \code{.setUp()} and
 \code{.tearDown()} functions are constructed automatically for you.
 They specify the context of these tests. This context is used, for
-instance, by the GUI in Komodo to locate the test function and the
-code being tested.
+instance, by the GUI in Komodo Edit/IDE to locate the test function
+and the code being tested.
 \begin{lyxcode}
 \#\#~Test~unit~'Square'
 
@@ -770,7 +778,7 @@ easily. See, for instance, the examples in the \pkg{svUnit} package.
 So, with test units associated to packages, you have a very convenient
 way to run these tests, including from the Komodo GUI. With just a
 little bit more coding you can also include these test units in the
-\command{R CMD check} process of your packages. You do thit by means
+\command{R CMD check} process of your packages. You do this by means
 of examples in a help page (we prefer to use \textbf{examples}, instead
 of \file{/tests} in the \command{R CMD check} process, because examples
 offer a more flexible way to run tests and you can also run them in
@@ -781,10 +789,11 @@ your unit tests to the \command{R CMD check} process (illustrated
 with the case of the \pkg{svUnit} package itself):
 \begin{itemize}
 \item Define a \file{.Rd} help file in the \file{/man} subdirectory called
-\file{unitTests.Rd} (or whatever name you prefer).
+\file{unitTests.<mypackage>.Rd} where <mypackage> is the name of
+your package (or whatever name you prefer).
 \item Fill the \file{.Rd} file, making sure that you define an alias as
-\file{unitTests.myPKG}. Also place a little bit of information telling
-how users can run your test in an interactive session.
+\file{unitTests.<mypackage>}. Also place a little bit of information
+telling how users can run your test in an interactive session.
 \item The important part of this file is, of course, the \code{\textbackslash{}examples\{\}}
 section. You must first clear the log, then run each test, and then,
 call the \code{errorLog()} function. That function looks if one or
@@ -796,9 +805,10 @@ test units will be included nicely in the checking process of your
 packages, that is, they will run silently each time you check your
 package if no error occurs, but will produce a detailed report in
 case of problems.
-\item Here is how your \file{.Rd} file should looks like:\end{itemize}
+\item Here is how your \file{.Rd} file should looks like (exemple of the
+\pkg{svUnit} package):\end{itemize}
 \begin{lyxcode}
-\textbackslash{}name\{unitTests\}
+\textbackslash{}name\{unitTests.svUnit\}
 
 \textbackslash{}alias\{unitTests.svUnit\}
 
@@ -832,43 +842,17 @@ case of problems.
 
 \textbackslash{}examples\{
 
-library(svUnit)~
+if~(require(svUnit))~\{~
 
-\#~Make~sure~to~clear~log~first
+~~~~clearLog()
 
-clearLog()
+~~~~runTest(svSuite(\textquotedbl{}package:svUnit\textquotedbl{}),~\textquotedbl{}svUnit\textquotedbl{})
 
+~~~~\#\#~Possibly~run~other~tests~here...
 
-
-\#~Run~all~test~units~defined~in~'svUnit'~package
-
-(runTest(svSuite(\textquotedbl{}package:svUnit\textquotedbl{}),~\textquotedbl{}svUnit\textquotedbl{}))~
-
-
-
-\textbackslash{}donttest\{~
-
-\#~These~tests~are~not~run~in~R~CMD~check~but~will~be~with
-
-\#~example(unitTests.svUnit)
-
-\#~Run~all~test~units~defined~in
-
-\#~the~/unitTests/VirtualClass~subdir
-
-(runTest(svSuite(\textquotedbl{}package:svUnit~(VirtualClass)\textquotedbl{}),
-
-~~~~\textquotedbl{}VirtualClass\textquotedbl{}))
+~~~~errorLog()
 
 \}
-
-
-
-\#~Check~errors~at~the~end~of~the~process
-
-\#(required~to~interrupt~R~CMD~check)
-
-errorLog()
 
 \}
 
@@ -876,13 +860,26 @@ errorLog()
 
 \textbackslash{}keyword\{utilities\}~
 \end{lyxcode}
-Also, this mechanisms, associated with examples, provides a very convenient
+Note, however, that if the package \pkg{svUnit} is not available
+on the computer where you run \command{R CMD check}, your tests are
+silently ignored (\code{require()} issues a warning, but that does
+not prevent the checking process to continue). This is an intended
+feature in order to allow compilation of your package without requiring
+\pkg{svUnit}. Hence, dependence to \pkg{svUnit} is less strict and
+also allows you to check your tests using \pkg{RUnit} (but you have
+to write a dedicated function for that). Still to keep such a less
+strict dependence on \pkg{svUnit}, you should add \code{svUnit}
+in the \code{Suggests:} field in the \file{DESCRIPTION} file of
+your package, not in \code{Depends:} or \code{Imports:} fields (except
+if you use \pkg{svUnit} for other purposes that testing your package
+using the mechanism discussed here, of course.
+
+Also, this approach, associated with examples, provides a very convenient
 and easy way to test a package from the command line in an interactive
 session by running:
 
 
 <<>>=
-library(svUnit)
 example(unitTests.svUnit)
 @
 
@@ -902,7 +899,7 @@ will be included (\pkg{svUnit} does all the required work to map
 these to actual directories where the test unit files are located).
 Also, if you specify \code{package:myPkg (subgroup)}, you will include
 the test units defined in \file{/unitTests/subgroup} in the package
-\pkg{myPkg}. Of course, you will be able to add also test units defined
+\pkg{myPkg}. Of course, you will be able to also add test units defined
 in custom directories, outside of \R{} packages (for instance for
 integration of \emph{harness tests} that check cross-packages, or
 multi-packages features of your application).
@@ -917,32 +914,32 @@ complex test unit file by collecting together several test functions
 is just a question of constructing a test suite, and then, applying
 the \code{makeUnit()} function to this \var{svSuite} object.
 
-Before we apply all this, you should also know one more function:
-\code{svSuiteList()}. This function lists all test units and test
-functions available in your system at a given time. So, you don’t
-need to manually create lists of components. You are better to list
-them automatically. Of course, this function has a lot of arguments
-for listing only test units in packages, only test functions, specifying
-where (in which environment) the test functions are located, adding
-custom directories where to look for test units, etc, etc. See the
-online help of this function for the description of all these arguments.
-One argument is particularly important: \code{excludeList =}. This
-argument defines one or several regular expressions that are used
-as filters to hide items from the list. This is required, since you
-will certainly not want to run again and again, let’s say, the example
-tests associated with the \pkg{svUnit} package (\pkg{svUnit} must
-be loaded in memory to run the tests, so its tests examples will always
-be listed by \code{svSuiteList()},... unless you define an adequate
-filter expression that will exclude them from your list)! As the default
-argument suggests it, the regular expression for list exclusion could
-also be recorded in \code{options(svUnit.excludeList = ...)}. Here
-is how it works:
+Before we apply all this, you should also know the existence of one
+more function: \code{svSuiteList()}. This function lists all test
+units and test functions available in your system at a given time.
+So, you don’t need to manually create lists of components. You are
+better to list them automatically. Of course, this function has a
+lot of arguments for listing only test units in packages, only test
+functions, specifying where (in which environment) the test functions
+are located, adding custom directories where to look for test units,
+etc, etc. See the online help of this function for the description
+of all these arguments. One argument is particularly important: \code{excludeList =}.
+This argument defines one or several regular expressions that are
+used as filters to hide items from the list. This is required, since
+you will certainly not want to run again and again, let’s say, the
+example tests associated with the \pkg{svUnit} package (\pkg{svUnit}
+must be loaded in memory to run the tests, so its tests examples will
+always be listed by \code{svSuiteList()},... unless you define an
+adequate filter expression that will exclude them from your list)!
+As the default argument suggests it, the regular expression for list
+exclusion could also be recorded in \code{options(svUnit.excludeList = ...)}.
+Here is how it works:
 
 
 <<>>=
-# Reset default exclusion list
+## Reset default exclusion list
 options(svUnit.excludeList = c("package:sv", "package:RUnit"))
-# List all currently available tests 
+## List all currently available tests 
 svSuiteList()
 @
 
@@ -954,7 +951,7 @@ list to see what happens:
 
 
 <<>>=
-# Clear exclusion list
+## Clear exclusion list
 options(svUnit.excludeList = NULL)
 svSuiteList()
 @
@@ -973,15 +970,15 @@ together very easily:
 Now let’s make a test unit using tests collected in this suite:
 
 
-<<>>=
+<<eval = FALSE>>=
 myUnit <- makeUnit(mySuite, name = "ExampleTests")
 file.show(myUnit, delete.file = TRUE)
 @
 
 This produces a file named \file{runitExampleTests.R} located (by
-default) in the \R{} temporary directory, and which coleects all
-tests in the user's workspace (either as \var{svTest} objects, or
-as tests attached to other objects), plus tests suites in packages
+default) in the \R{} temporary directory, and which collects together
+all tests in the user's workspace (either as \var{svTest} objects,
+or as tests attached to other objects), plus tests suites in packages
 that are \textbf{not} in the exclusion list. Running all tests in
 your suite is very simple. You still use \code{runTest()} as usual,
 but this time, you apply it to your \var{svSuite} object:
@@ -998,13 +995,13 @@ the \pkg{svUnit} package, including functions to define the content
 of the suite manually (see online help).
 
 
-\section{Using svUnit with Komodo/SciViews}
+\section{Using svUnit with SciViews Komodo}
 
-If you use the Komodo GUI (see \url{http://www.sciviews.org/SciViews-K}),
+If you use the SciViews Komodo GUI (see \url{http://www.sciviews.org/SciViews-K}),
 you can integrate \pkg{svUnit} tests in this IDE and display reports
 in a convenient hierarchical tree presentation (Fig. \ref{fig:KomodoRUnit}).
-If \R{} is started from within Komodo (with the \SciViews{-K} and
-\SciViews{-K Unit} plugins installed), then, loading the \pkg{svUnit}
+If \R{} is started from within Komodo Edit or IDE (with the \SciViews{-K}
+and \SciViews{-K Unit} plugins installed), then, loading the \pkg{svUnit}
 package in \R{} automatically installs the \textbf{R Unit} side panel
 in Komodo at right. Its use should be straightforward:
 

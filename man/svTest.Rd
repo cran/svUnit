@@ -47,33 +47,33 @@ runTest(x, \dots)
 }
 
 \arguments{
-  \item{testFun}{ A function without arguments defining assertions (using
-    checkxxx() functions) for tests to be transformed into a 'svTest' object }
-  \item{x}{ Any kind of object }
-  \item{value}{ The tests to place in the object (as 'test' attribute);
+  \item{testFun}{ a function without arguments defining assertions (using
+    checkxxx() functions) for tests to be transformed into a 'svTest' object. }
+  \item{x}{ any kind of object. }
+  \item{value}{ the tests to place in the object (as 'test' attribute);
     could be a 'svTest' object, or a function without arguments with assertions
-	(\code{checkxxx()} functions) }
-  \item{name}{ The name of a test }
-  \item{dir}{ The directory where to create the test unit file }
-    \item{objfile}{ The path to the file containing the original source code of
+	(\code{checkxxx()} functions). }
+  \item{name}{ the name of a test; }
+  \item{dir}{ the directory where to create the test unit file. }
+    \item{objfile}{ the path to the file containing the original source code of
     the object being tested. This argument is used to bring a context for a
 	test and allow a GUI to automatically open the source file for edition when
-	the user clicks on a test that failed or raised an error }
-  \item{codeSetUp}{ An expression with some code you want to add to the
+	the user clicks on a test that failed or raised an error. }
+  \item{codeSetUp}{ an expression with some code you want to add to the
     \code{.setUp() } function in your unit file (this function is executed
-	before each test }
-  \item{codeTearDown}{ An expression with some code you want to add to the
+	before each test. }
+  \item{codeTearDown}{ an expression with some code you want to add to the
     \code{.tearDown() } function in your unit file (this function is executed
-	after each test }
-  \item{tag}{ A tag is a character string identifying a location in source code
+	after each test. }
+  \item{tag}{ a tag is a character string identifying a location in source code
     files (either a test unit file, or the original source code of the tested
 	objects defined in \code{objfile}. This character string will be searched
 	by the text editor for easy location of the cursor near the corresponding`
 	test command, or near the location in the original object that is concerned
 	by this test. Use any string you want to uniquely identify your tag, both
-	in your files, and in this argument }
-  \item{msg}{ A message you want to associate with this test run }
-  \item{\dots}{ Further arguments to the method (not used yet) }
+	in your files, and in this argument. }
+  \item{msg}{ a message you want to associate with this test run. }
+  \item{\dots}{ further arguments to the method (not used yet). }
 }
 
 \value{
@@ -101,7 +101,7 @@ clearLog()	# Clear the log file
 
 foo <- function(x, y = 2) return(x * y)
 is.test(foo)	# No
-# Create test cases for this function
+## Create test cases for this function
 test(foo) <- function () {
 	checkEqualsNumeric(4, foo(2))
 	checkEqualsNumeric(6, foo(2, 3))
@@ -114,25 +114,25 @@ test(foo) <- function () {
 is.test(foo)	# Yes
 
 \dontrun{
-# Create a test unit on disk and view it
+## Create a test unit on disk and view it
 unit <- makeUnit(foo)
 file.show(unit, delete.file = TRUE)
 }
 
-# Run the test
+## Run the test
 (runTest(foo))
-# Same as
+## Same as...
 bar <- test(foo)
 (runTest(bar))
 
-# How fast can we run 100 times such kind of tests (700 test in total)?
-# (just an indication because in real situation with test unit files, we
-# have also the time required to source the units!)
+## How fast can we run 100 times such kind of tests (700 test in total)?
+## (just an indication because in real situation with test unit files, we
+## have also the time required to source the units!)
 system.time(for (i in 1:100) runTest(foo))[3]
 
 is.svTest(test(foo))	# Yes, of course!
-# When an object without associated test is passed to runTest(), a simple
-# test containing only a DEACTIVATED entry is build
+## When an object without associated test is passed to runTest(), a simple
+## test containing only a DEACTIVATED entry is build
 x <- 1:10
 summary(runTest(x))
 
@@ -142,3 +142,5 @@ rm(foo, bar, x)
 }
 
 \keyword{ utilities }
+
+\concept{ unit testing }

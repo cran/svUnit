@@ -18,16 +18,16 @@ guiSuiteAutoList(\dots)
 }
 
 \arguments{
-  \item{object}{ A svUnitData object }
-  \item{\dots}{ Not used currently }
-  \item{sep}{ Field separator to use in the results }
-  \item{path}{ Path where to write a 'Suites.txt' file with the list of currently
+  \item{object}{ a svUnitData object. }
+  \item{\dots}{ not used currently. }
+  \item{sep}{ field separator to use in the results. }
+  \item{path}{ path where to write a 'Suites.txt' file with the list of currently
     available test suites (to be used by the GUI client). If \code{NULL}, no
-    file is written (by default) }
-  \item{compare}{ Do we compare the list of available test suite and return
+    file is written (by default). }
+  \item{compare}{ do we compare the list of available test suite and return
     something to the GUI client only if there are changes in the list? This is
     used (when TRUE) to avoid unnecessary multiple processings of the same list
-    by the GUI client }
+    by the GUI client. }
 }
 
 \value{
@@ -43,3 +43,5 @@ guiSuiteAutoList(\dots)
 \seealso{ \code{\link{svTest}}, \code{\link{svSuite}}, \code{\link{koUnit_version}} }
 
 \keyword{ utilities }
+
+\concept{ unit testing }

@@ -5,14 +5,14 @@ Depends: R (>= 1.9.0)
 Suggests: svGUI, datasets, utils
 Description: A complete unit test system and functions to implement its
         GUI part
-Version: 0.7-2
-Date: 2010-05-17
+Version: 0.7-3
+Date: 2010-09-05
 Author: Philippe Grosjean
 Maintainer: Philippe Grosjean <phgrosjean@sciviews.org>
 License: GPL-2
 LazyLoad: yes
 URL: http://www.sciviews.org/SciViews-R
 BugReports: https://r-forge.r-project.org/tracker/?group_id=194
-Packaged: 2010-05-18 06:28:41 UTC; phgrosjean
+Packaged: 2010-09-25 07:33:38 UTC; phgrosjean
 Repository: CRAN
-Date/Publication: 2010-05-18 06:29:46
+Date/Publication: 2010-09-27 06:35:50

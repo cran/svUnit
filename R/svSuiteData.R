@@ -1,24 +1,22 @@
-"is.svSuiteData" <-
-function (x)
+is.svSuiteData <- function (x)
 {
-	# It this a svSuiteData object
+	## It this a svSuiteData object
 	return(inherits(x, "svSuiteData"))
 }
 
-"stats.svSuiteData" <-
-function (object, ...)
+stats.svSuiteData <- function (object, ...)
 {
     if (!is.svSuiteData(object))
         stop("'object' must inherit from 'svSuiteData'")
-    # Get the list of tests
+    ## Get the list of tests
     Tests <- ls(object)
     if (length(Tests) == 0) {
-        # The object is empty!
+        ## The object is empty!
         Res <- data.frame(kind = .kind(logical()), timing = numeric(),
             time = numeric(), unit = character(), tag = character(),
             msg = character(), stringsAsFactors = FALSE)
     } else {
-        # Functions to get data for each test
+        ## Functions to get data for each test
         getKind <- function(x) .kindMax(x$kind)
         getTiming <- function(x) attr(x, "stats")["timing"]
         getTime <- function(x) attr(x, "time")
@@ -35,18 +33,16 @@ function (object, ...)
     return(Res)
 }
 
-"metadata" <-
-function (object, ...)
+metadata <- function (object, ...)
 	UseMethod("metadata")
 
-"metadata.svSuiteData" <-
-function (object,
+metadata.svSuiteData <- function (object,
 	fields = c("R.version", "sessionInfo", "time", "description"), ...)
 {
-    # Extract metadata information from a 'svSuiteData' object
+    ## Extract metadata information from a 'svSuiteData' object
 	if (!is.svSuiteData(object))
 		stop("'object' must inherit from 'svSuiteData'")
-	# Return a list with all metadata elements found
+	## Return a list with all metadata elements found
 	fields <- paste(".", fields, sep = "")
     Res <- list()
 	for (F in fields)
@@ -54,8 +50,7 @@ function (object,
 	return(Res)
 }
 
-"print.svSuiteData" <-
-function (x, all = FALSE, file = "", append = FALSE, ...)
+print.svSuiteData <- function (x, all = FALSE, file = "", append = FALSE, ...)
 {
     if (!is.svSuiteData(x))
         stop("'x' must inherit from 'svSuiteData'")
@@ -63,7 +58,7 @@ function (x, all = FALSE, file = "", append = FALSE, ...)
     if (length(Tests) == 0) {
         cat("No test records!\n", file = file, append = append)
     } else {
-        # Print general information about the tests
+        ## Print general information about the tests
         Stats <- stats(x)
 		Tests <- rownames(Stats)	# To make sure we use the same!
         Timing <- .formatTime(sum(Stats$timing, na.rm = TRUE), secDigits = 1)
@@ -73,35 +68,29 @@ function (x, all = FALSE, file = "", append = FALSE, ...)
 			sep = "", collapse = "\n"),
             "\n\n", sep = "", file = file, append = TRUE)
 
-        # Print detailed information about each test
+        ## Print detailed information about each test
         for (Test in Tests)
             print(x[[Test]], all = all, file = file, append = TRUE, ...)
     }
     return(invisible(x))
 }
 
-"summary.svSuiteData" <-
-function (object, ...)
+summary.svSuiteData <- function (object, ...)
     protocol_text.svSuiteData(object, ...)
 
-"protocol" <-
-function (object, type = "text", file = "", append = FALSE, ...)
+protocol <- function (object, type = "text", file = "", append = FALSE, ...)
 	UseMethod("protocol")
 
-"protocol.default" <-
-function (object, type = "text", file = "", append = FALSE, ...)
+protocol.default <- function (object, type = "text", file = "", append = FALSE, ...)
 	get(paste("protocol", type[1], sep = "_"))(object, file = file, append = append, ...)
 
-"protocol.svSuiteData" <-
-function (object, type = "text", file = "", append = FALSE, ...)
+protocol.svSuiteData <- function (object, type = "text", file = "", append = FALSE, ...)
 	get(paste("protocol", type[1], sep = "_"))(object, file = file, append = append, ...)
 
-"protocol_text" <-
-function (object, file = "", append = FALSE, ...)
+protocol_text <- function (object, file = "", append = FALSE, ...)
 	UseMethod("protocol_text")
 
-"protocol_text.svSuiteData" <-
-function (object, file = "", append = FALSE, ...)
+protocol_text.svSuiteData <- function (object, file = "", append = FALSE, ...)
 {
     if (!is.svSuiteData(object))
         stop("'object' must inherit from 'svSuiteData'")
@@ -109,7 +98,7 @@ function (object, file = "", append = FALSE, ...)
     if (length(Tests) == 0) {
         cat("No test records!\n", file = file, append = append)
     } else {
-        # Print general information about the tests
+        ## Print general information about the tests
         Stats <- stats(object)
 		Tests <- rownames(Stats)	# To make sure we use the same!
 		Timing <- .formatTime(sum(Stats$timing, na.rm = TRUE), secDigits = 1)
@@ -119,7 +108,7 @@ function (object, file = "", append = FALSE, ...)
 			sep = "", collapse = "\n"),
             "\n\n", sep = "", file = file, append = TRUE)
 
-        # Summarize each test
+        ## Summarize each test
         for (Test in Tests)
             summary(object[[Test]], file = file, append = TRUE)
     }

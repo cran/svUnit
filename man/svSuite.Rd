@@ -47,55 +47,55 @@ svSuiteList(packages = TRUE, objects = TRUE, dirs = getOption("svUnit.dirs"),
 }
 
 \arguments{
-  \item{tests}{ A character string with items to include in the test suite.
+  \item{tests}{ a character string with items to include in the test suite.
     It could be 'package:PKG' for including test units located in the /unitTests
 	subdirectory of the package PGK, or 'package:PKG (SUITE)' for test units
 	located in the subdirectory /unitTests/SUITE of package PKG, or 'dir:MYDIR'
 	for including test units in MYDIR, or 'test(OBJ)' for tests embedded in an
-	object, or 'OBJ' for 'svTest' object directly }
-  \item{x}{ Any kind of object }
-  \item{packages}{ Do we list test units available in loaded packages?
+	object, or 'OBJ' for 'svTest' object directly. }
+  \item{x}{ any kind of object. }
+  \item{packages}{ do we list test units available in loaded packages?
     Alternatively one can provide a character vector of package names, and it
 	will be used to filter packages (take care: in this case it will look at
-	installed packages, not only loaded packages!) }
-  \item{objects}{ Do we list test available in objects? Alternatively, one can
+	installed packages, not only loaded packages)! }
+  \item{objects}{ do we list test available in objects? Alternatively, one can
     provide a character vector of object names, and it will filter objects in
-	'pos' according to this vector }
-  \item{dirs}{ An additional list of directories where to look for more test
+	'pos' according to this vector. }
+  \item{dirs}{ an additional list of directories where to look for more test
     units. For convenience, this list can simply be saved as an 'svUnit.dirs'
-	options }
-  \item{excludeList}{ A list of items to exclude from the listing. The function
+	options. }
+  \item{excludeList}{ a list of items to exclude from the listing. The function
     uses regular expression to match the exclusions. So, for instance, specifying
 	\code{"package:MYPKG"} will exclude all items from package 'MYPKG', while
 	using \code{"package:MYPKG$"} will exclude only tests suites defined in the
 	.../MYPKG/unitTests directory, bur not in its subdirectories. For
     convenience, it can be saved in a 'svUnit.excludeList' option. By default,
 	all tests for packages whose name start with 'sv' or 'RUnit' are excluded,
-	that is, \code{c("package:sv", "package:RUnit")} }
-  \item{pos}{ The environment to look for 'objects' (environment, character
+	that is, \code{c("package:sv", "package:RUnit")}. }
+  \item{pos}{ the environment to look for 'objects' (environment, character
     string with name of an environment, or interger with position of the
-	environment in the search path }
-  \item{loadPackages}{ In the case a list of packages is provided in
+	environment in the search path. }
+  \item{loadPackages}{ in the case a list of packages is provided in
     \code{packages =}, do we make sure that these packages are loaded? If yes,
 	the function will try to load all packages in that list that are not loaded
 	yet and will issue a warning for the packages not found. Default,
-	\code{FALSE} }
-  \item{name}{ The name of the test suite to build }
-  \item{dir}{ The directory where to create the test unit file }
-  \item{objfile}{ The path to the file containing the original source code of
+	\code{FALSE}. }
+  \item{name}{ the name of the test suite to build. }
+  \item{dir}{ the directory where to create the test unit file }
+  \item{objfile}{ the path to the file containing the original source code of
     the object being tested. This argument is used to bring a context for a
 	test and allow a GUI to automatically open the source file for edition when
-	the user clicks on a test that failed or raised an error }
-  \item{codeSetUp}{ An expression with some code you want to add to the
+	the user clicks on a test that failed or raised an error. }
+  \item{codeSetUp}{ an expression with some code you want to add to the
     \code{.setUp() } function in your unit file (this function is executed
-	before each test }
-  \item{codeTearDown}{ An expression with some code you want to add to the
+	before each test. }
+  \item{codeTearDown}{ an expression with some code you want to add to the
     \code{.tearDown() } function in your unit file (this function is executed
-	after each test }
-  \item{unitname}{ The name of a unit to run inside the suite. If \code{NULL}
-    (by default), all units are run }
-  \item{\dots}{ Further arguments to pass to \code{makeUnit()} or
-    \code{runTest()} (not used yet) }
+	after each test. }
+  \item{unitname}{ the name of a unit to run inside the suite. If \code{NULL}
+    (by default), all units are run. }
+  \item{\dots}{ further arguments to pass to \code{makeUnit()} or
+    \code{runTest()} (not used yet). }
 }
 
 \value{
@@ -141,13 +141,13 @@ svSuiteList(packages = TRUE, objects = TRUE, dirs = getOption("svUnit.dirs"),
 
 \examples{
 svSuiteList()	# List all currently available test units and test cases
-# Exclusion list is used (regular expression filtering!). It contains:
+## Exclusion list is used (regular expression filtering!). It contains:
 (oex <- getOption("svUnit.excludeList"))
-# clear it, and relist available test units
+## Clear it, and relist available test units
 options(svUnit.excludeList = NULL)
 svSuiteList()
 
-# Two functions that include their test cases
+## Two functions that include their test cases
 Square <- function(x) return(x^2)
 test(Square) <- function() {
 	checkEquals(9, Square(3))
@@ -162,8 +162,8 @@ test(Cube) <- function() {
 	checkException(Cube("xx"))
 }
 
-# A separate test case object (not attached to a particular object)
-# This is the simplest way to loosely define quick and durty integration tests
+## A separate test case object (not attached to a particular object)
+## This is the simplest way to loosely define quick and durty integration tests
 test_Integrate <- svTest(function() {
 	checkTrue(1 < 2, "check1")
 	v <- 1:3 	# The reference
@@ -171,37 +171,39 @@ test_Integrate <- svTest(function() {
 	checkEquals(v, w)
 })
 
-# A function without test cases (will be filtered out of the suite list)
+## A function without test cases (will be filtered out of the suite list)
 foo <- function(x) return(x)
 
-# Look now what tests are available
+## Look now which tests are available
 svSuiteList()
 
-# Only objects, no package units
+## Only objects, no package units
 svSuiteList(packages = FALSE)
 
 \dontrun{
-# Create the test unit file for all objects with tests in .GlobalEnv
+## Create the test unit file for all objects with tests in .GlobalEnv
 myunit <- makeUnit(svSuiteList(), name = "AllTests")
 file.show(myunit, delete.file = TRUE)
 }
 
-# Filter objects using a list (object with/without tests and a  nonexisting obj)
+## Filter objects using a list (object with/without tests and a nonexisting obj)
 svSuiteList(packages = FALSE, objects = c("Cube", "foo", "bar"))
 
-# Create another svSuite object with selected test items
+## Create another svSuite object with selected test items
 (mysuite <- svSuite(c("package:svUnit (VirtualClass)", "test(Cube)")))
 is.svSuite(mysuite)	# Should be!
 
 \dontrun{
-# Run all the tests currently available
+## Run all the tests currently available
 (runTest(svSuiteList(), name = "AllTests"))
 summary(Log())
 }
 
-# Restore previous exclusion list, and clean up the environment
+## Restore previous exclusion list, and clean up the environment
 options(svUnit.excludeList = oex)
 rm(Square, Cube, foo, test_Integrate, mysuite, myunit, oex)
 }
 
 \keyword{ utilities }
+
+\concept{ unit testing }
