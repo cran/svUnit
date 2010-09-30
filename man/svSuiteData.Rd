@@ -11,6 +11,9 @@
 \alias{protocol.svSuiteData}
 \alias{protocol_text}
 \alias{protocol_text.svSuiteData}
+\alias{protocol_junit}
+\alias{protocol_junit.svSuiteData}
+\alias{protocol_junit.svTestData}
 
 \title{ Objects of class 'svSuiteData' contain results from running test suites }
 \description{
@@ -37,8 +40,13 @@ metadata(object, \dots)
 protocol(object, type = "text", file = "", append = FALSE, \dots)
 \method{protocol}{default}(object, type = "text", file = "", append = FALSE, \dots)
 \method{protocol}{svSuiteData}(object, type = "text", file = "", append = FALSE, \dots)
+
 protocol_text(object, file = "", append = FALSE, \dots)
-\method{protocol_text}{svSuiteData}(object, file = "", append = FALSE, ...)
+\method{protocol_text}{svSuiteData}(object, file = "", append = FALSE, \dots)
+
+protocol_junit(object, \dots)
+\method{protocol_junit}{svSuiteData}(object, file = "", append = FALSE, \dots)
+\method{protocol_junit}{svTestData}(object, \dots)
 }
 
 \arguments{
@@ -55,8 +63,8 @@ protocol_text(object, file = "", append = FALSE, \dots)
     \code{file = ""}, the protocol report is output to the console }
   \item{append}{ do we append to this file? }
   \item{type}{ character. The type of protocol report to create. For the moment,
-    only \code{type = "text"} is supported, but further types (HTML, LaTeX,
-	Wiki, etc.) will be provided later. }
+    only \code{type = "text"} and \code{type = "junit"} are supported,
+    but further types (HTML, LaTeX, Wiki, etc.) will be provided later. }
   \item{\dots}{ further arguments to pass to methods. Not used yet. }
 }
 
@@ -77,7 +85,8 @@ protocol_text(object, file = "", append = FALSE, \dots)
   centralized in the same log ('svSuiteData' object).
 }
 
-\author{ Philippe Grosjean <phgrosjean@sciviews.org> }
+\author{ Philippe Grosjean <phgrosjean@sciviews.org>; Mario Frasca for the junit
+  protocol. }
 
 \seealso{ \code{\link{svSuite}}, \code{\link{is.svTestData}},
   \code{\link{check}}, \code{\link{Log}} }

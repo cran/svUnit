@@ -16,8 +16,8 @@
   \tabular{ll}{
     Package: \tab svUnit\cr
     Type: \tab Package\cr
-    Version: \tab 0.7-3\cr
-    Date: \tab 2009-09-05\cr
+    Version: \tab 0.7-4\cr
+    Date: \tab 2009-09-30\cr
     License: \tab GPL 2 or above, at your convenience\cr
   }
 

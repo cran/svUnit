@@ -388,8 +388,8 @@ msg = "")
 	options(warn = nwarn)
 
 	## Evaluate the test function in the .TestEnv environment
-	cmd <- paste("evalq(.LogRes <- try( { .setUp(); ", test,
-		"(); .tearDown() }, silent = TRUE), envir = envir)", sep = "")
+	cmd <- paste("evalq(.LogRes <- try( { .setUp(); `", test,
+		"`(); .tearDown() }, silent = TRUE), envir = envir)", sep = "")
 	eval(parse(text = cmd))
 
 	## Analyze error => is it a deactivation or error in the code?

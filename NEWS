@@ -1,5 +1,16 @@
 = svUnit News
 
+== svUnit 0.7-5
+
+* XML-encoding entities in protocol_junit.svTestData.  closes #1147
+
+
+== svUnit 0.7-4
+
+* Backquoting of test name in evaluation instruction, allowing to use
+  syntactically incorrect names for tests.
+
+
 == svUnit 0.7-3
 
 * Loading of svUnit sometimes failed during checking of the SciViews-K Unit
