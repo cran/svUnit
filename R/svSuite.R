@@ -274,29 +274,31 @@ unitname = NULL, ...)
 
 	## Source each runit*.R file in turn
 	for (unit in names(.lastSuite)) {
-		## Create a new environment for this suite (created in .GlobalEnv so
-		## that we can inspect it in case of stop on error)
-		.TestSuiteEnv <<- new.env(parent = .GlobalEnv)
+		## Create a new environment for this suite.
+		.ThisTestSuiteEnv <- new.env(parent = .GlobalEnv)
+        ## store it globally so that we can inspect it in case of stop
+		## on error.  but please do not remove the local alias.  #1327
+        assign(".TestSuiteEnv", .ThisTestSuiteEnv, envir = .GlobalEnv)
 		## Source the corresponding file
 		Unit <- .lastSuite[[unit]]$file
-		sys.source(Unit, envir = .TestSuiteEnv)
+		sys.source(Unit, envir = .ThisTestSuiteEnv)
 		## Make sure there are .setUp() and .tearDown() functions
-		if (!exists(".setUp", envir = .TestSuiteEnv, mode = "function",
+		if (!exists(".setUp", envir = .ThisTestSuiteEnv, mode = "function",
 			inherits = FALSE))
-			.TestSuiteEnv$.setUp <- function() {}
-		if (!exists(".tearDown", envir = .TestSuiteEnv, mode = "function",
+			.ThisTestSuiteEnv$.setUp <- function() {}
+		if (!exists(".tearDown", envir = .ThisTestSuiteEnv, mode = "function",
 			inherits = FALSE))
-			.TestSuiteEnv$.tearDown <- function() {}
+			.ThisTestSuiteEnv$.tearDown <- function() {}
 		## List all test files in the unit
-		tests <- ls(.TestSuiteEnv, pattern = "^test.+$")
+		tests <- ls(.ThisTestSuiteEnv, pattern = "^test.+$")
 		## Keep only 'test*' objects that are function
 		keep <- unlist(lapply(tests, function(n) exists(n,
-			envir = .TestSuiteEnv, mode = "function", inherits = FALSE)))
+			envir = .ThisTestSuiteEnv, mode = "function", inherits = FALSE)))
 		tests <- tests[keep]
 		.Log$.lastSuite[[unit]]$tests <- tests
 		## Run each test in turn
 		for (test in tests) {
-			.runTest(envir = .TestSuiteEnv, test = test, unit = Unit)
+			.runTest(envir = .ThisTestSuiteEnv, test = test, unit = Unit)
 		}
 	}
 	return(invisible(files))

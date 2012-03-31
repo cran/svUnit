@@ -27,6 +27,7 @@ export(as.svSuite,
        lastTest,
        Log,
        makeUnit,
+       makeTestListFromExamples,
        metadata,
        protocol,
        protocol_text,
@@ -58,6 +59,7 @@ S3method(protocol_junit, svTestData)
 S3method(runTest, default)
 S3method(runTest, svTest)
 S3method(runTest, svSuite)
+S3method(runTest, list)
 
 S3method(stats, svSuiteData)
 S3method(stats, svTestData)

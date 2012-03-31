@@ -3,9 +3,6 @@
 * Be able to track the guilty line of code for each test and to output something
   like: ./inst/unitTest/runit.select.R:28:... (would be most useful for Emacs)!
 
-* It seems that all svTestData objects receive as 'unit' the last unit read
-  [thanks Mario Frasca for this notice] => should be corrected.
-  
 * We need accessors to 'timing' and 'max.kind'.
 
 * guiTestFeedback() must be finished.

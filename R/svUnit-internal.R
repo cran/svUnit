@@ -349,11 +349,11 @@ msg = "")
 	oContext <- c(Unit = .Log$..Unit, Obj = .Log$..Obj, File = .Log$..File,
 		Msg = .Log$..Msg, Tag = .Log$..Tag)
 	on.exit({
-		.Log$..Unit <- oContext[1]
-		.Log$..Obj <- oContext[2]
-		.Log$..File <- oContext[3]
-		.Log$..Msg <- oContext[4]
-		.Log$..Tag <- oContext[5]
+		.Log$..Unit <- as.character(oContext[1])
+		.Log$..Obj <- as.character(oContext[2])
+		.Log$..File <- as.character(oContext[3])
+		.Log$..Msg <- as.character(oContext[4])
+		.Log$..Tag <- as.character(oContext[5])
 	})
 	.Log$..Unit <- unit				# The unit file
 	.Log$..Obj <- name 				# Name of the tested object

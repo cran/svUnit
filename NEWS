@@ -1,8 +1,39 @@
 = svUnit News
 
+== svUnit 0.7-10
+
+* In runTest.svSuite(), a <<- assignation is replaced by
+  assign(..., envir = .GlobalEnv).
+
+* Vignette svUnit is now moved to \vignettes subdirectory. DESCRIPTION and NEWS
+  files are reworked.
+
+
+== svUnit 0.7-9
+
+* Vignette svUnit reimplemented in LyX 2.0-0.
+
+
+== svUnit 0.7-8
+
+* Option added to skip instead of fail missing documentation examples.
+
+
+== svUnit 0.7-7
+
+* The test list was only repeatedly running the last test defined. Fixed.
+
+
+== svUnit 0.7-6
+
+* Refer to last test environment through a local identifier. Closes #1327.
+
+* Strip attributes from context fields when saving them temporarily.
+
+
 == svUnit 0.7-5
 
-* XML-encoding entities in protocol_junit.svTestData.  closes #1147
+* XML-encoding entities in protocol_junit.svTestData. Closes #1147.
 
 
 == svUnit 0.7-4

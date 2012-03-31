@@ -7,11 +7,13 @@
 \alias{is.test}
 \alias{print.svTest}
 \alias{makeUnit}
+\alias{makeTestListFromExamples}
 \alias{makeUnit.default}
 \alias{makeUnit.svTest}
 \alias{runTest}
 \alias{runTest.default}
 \alias{runTest.svTest}
+\alias{runTest.list}
 
 \title{ Create, attach to and manipulate test functions in R objects }
 \description{
@@ -44,6 +46,9 @@ runTest(x, \dots)
 	tag = "", msg = "", \dots)
 \method{runTest}{svTest}(x, name = deparse(substitute(x)), objfile = "",
 	tag = "", msg = "", \dots)
+\method{runTest}{list}(x, \dots)
+
+makeTestListFromExamples(packageName, manFilesDir, skipFailing=FALSE)
 }
 
 \arguments{
@@ -52,27 +57,34 @@ runTest(x, \dots)
   \item{x}{ any kind of object. }
   \item{value}{ the tests to place in the object (as 'test' attribute);
     could be a 'svTest' object, or a function without arguments with assertions
-	(\code{checkxxx()} functions). }
+    (\code{checkxxx()} functions). }
   \item{name}{ the name of a test; }
   \item{dir}{ the directory where to create the test unit file. }
     \item{objfile}{ the path to the file containing the original source code of
     the object being tested. This argument is used to bring a context for a
-	test and allow a GUI to automatically open the source file for edition when
-	the user clicks on a test that failed or raised an error. }
+    test and allow a GUI to automatically open the source file for edition when
+    the user clicks on a test that failed or raised an error. }
   \item{codeSetUp}{ an expression with some code you want to add to the
     \code{.setUp() } function in your unit file (this function is executed
-	before each test. }
+    before each test. }
   \item{codeTearDown}{ an expression with some code you want to add to the
     \code{.tearDown() } function in your unit file (this function is executed
-	after each test. }
+    after each test. }
   \item{tag}{ a tag is a character string identifying a location in source code
     files (either a test unit file, or the original source code of the tested
-	objects defined in \code{objfile}. This character string will be searched
-	by the text editor for easy location of the cursor near the corresponding`
-	test command, or near the location in the original object that is concerned
-	by this test. Use any string you want to uniquely identify your tag, both
-	in your files, and in this argument. }
+    objects defined in \code{objfile}. This character string will be searched
+    by the text editor for easy location of the cursor near the corresponding`
+    test command, or near the location in the original object that is concerned
+    by this test. Use any string you want to uniquely identify your tag, both
+    in your files, and in this argument. }
   \item{msg}{ a message you want to associate with this test run. }
+  \item{packageName}{ a character string identifying the package
+    from which to extract examples. }
+  \item{manFilesDir}{ a character string identifying the directory
+    holding the manual pages and examples. }
+  \item{skipFailing}{ a logical indicating whether missing or failing
+    documentation examples should be marked as `skipped` instead of as
+    `failure`. }
   \item{\dots}{ further arguments to the method (not used yet). }
 }
 

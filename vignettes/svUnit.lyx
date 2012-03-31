@@ -1,5 +1,5 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
 \begin_document
 \begin_header
 \textclass article
@@ -9,20 +9,28 @@
 \end_preamble
 \use_default_options false
 \begin_modules
-sweave
+svSweave
 \end_modules
+\maintain_unincluded_children false
 \language english
-\inputencoding utf8
+\language_package default
+\inputencoding utf8x
+\fontencoding global
 \font_roman palatino
 \font_sans lmss
 \font_typewriter lmtt
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
 
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref true
@@ -43,9 +51,18 @@ sweave
 \use_geometry true
 \use_amsmath 0
 \use_esint 0
+\use_mhchem 1
+\use_mathdots 1
 \cite_engine natbib_authoryear
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \leftmargin 2.5cm
 \topmargin 3cm
 \rightmargin 3cm
@@ -53,15 +70,16 @@ sweave
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 2
 \paperpagestyle fancy
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -274,7 +292,7 @@ butler
 
 \end_inset
 
- , but it is not maintained any more and has given up in favor of 
+, but it is not maintained any more and has given up in favor of 
 \begin_inset Flex CharStyle:Pkg
 status collapsed
 
@@ -400,7 +418,7 @@ test....
 
 \end_inset
 
-) are collected together in a sourceable 
+) are collected together in a source-able 
 \begin_inset Flex R
 status collapsed
 
@@ -420,7 +438,7 @@ runit....
 
 \end_inset
 
- ) on disk.
+) on disk.
  This file is called a 
 \series bold
 test unit
@@ -434,7 +452,7 @@ A
 test suite
 \series default
  (object 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -483,7 +501,7 @@ runTestFile()
 
 .
  Once the test is run, a 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -736,7 +754,7 @@ RUnit
 
  (version 0.4-17) did not allow to subclass its objects.
  Moreover, its 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -757,7 +775,7 @@ lapply()
 
 \end_inset
 
- /
+ / 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -768,7 +786,7 @@ sapply()
 \end_inset
 
  procedures to extract some content.
- Finally, the concept of test units as sourceable files on disk is a nice
+ Finally, the concept of test units as source-able files on disk is a nice
  idea, but it is too rigid for quick writing test cases for objects not
  associated (yet) with an 
 \begin_inset Flex R
@@ -1107,7 +1125,7 @@ status collapsed
 \end_inset
 
 -K.
- The procedure is explaned here: 
+ The procedure is explained here: 
 \begin_inset Flex URL
 status collapsed
 
@@ -1218,6 +1236,7 @@ hor_pos "c"
 has_inner_box 0
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
@@ -1307,7 +1326,7 @@ status collapsed
 
 \begin_layout Plain Layout
 In fact, you can attach 
-\begin_inset Flex CharStyle:Pkg
+\begin_inset Flex Pkg
 status collapsed
 
 \begin_layout Plain Layout
@@ -1521,17 +1540,17 @@ Log()
 
 \end_inset
 
-, and a summary of its containt is displayed using 
+, and a summary of its content is displayed using 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
 \begin_layout Plain Layout
-summary(Log())
+summary(Log()
 \end_layout
 
 \end_inset
 
-.
+).
  So, to run test for your 
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -1653,7 +1672,7 @@ status collapsed
 status collapsed
 
 \begin_layout Plain Layout
-\begin_inset Flex CharStyle:Code
+\begin_inset Flex Code
 status collapsed
 
 \begin_layout Plain Layout
@@ -1663,7 +1682,7 @@ checkException()
 \end_inset
 
  can also track 
-\begin_inset Flex CharStyle:Code
+\begin_inset Flex Code
 status collapsed
 
 \begin_layout Plain Layout
@@ -1674,7 +1693,7 @@ warning()
 
  messages with this little trick: first convert all warnings into errors
  with 
-\begin_inset Flex CharStyle:Code
+\begin_inset Flex Code
 status collapsed
 
 \begin_layout Plain Layout
@@ -1684,7 +1703,7 @@ owarn <- options(warn = 2)$warn
 \end_inset
 
 , run the code that should generate a warning inside 
-\begin_inset Flex CharStyle:Code
+\begin_inset Flex Code
 status collapsed
 
 \begin_layout Plain Layout
@@ -1694,7 +1713,7 @@ checkException()
 \end_inset
 
 , and then restore default warning behavior with 
-\begin_inset Flex CharStyle:Code
+\begin_inset Flex Code
 status collapsed
 
 \begin_layout Plain Layout
@@ -1913,7 +1932,7 @@ RUnit
  Five such functions are currently defined:
 \end_layout
 
-\begin_layout List
+\begin_layout Labeling
 \labelwidthstring 00.00.0000
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -1947,7 +1966,7 @@ current
 .
 \end_layout
 
-\begin_layout List
+\begin_layout Labeling
 \labelwidthstring 00.00.0000
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -1962,7 +1981,7 @@ checkEqualsNumeric(current, target)
  allowed within a tolerance window).
 \end_layout
 
-\begin_layout List
+\begin_layout Labeling
 \labelwidthstring 00.00.0000
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -1986,7 +2005,7 @@ status collapsed
  objects are strictly identical.
 \end_layout
 
-\begin_layout List
+\begin_layout Labeling
 \labelwidthstring 00.00.0000
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -2104,7 +2123,7 @@ all(expr)
 ), both functions should be compatible.
 \end_layout
 
-\begin_layout List
+\begin_layout Labeling
 \labelwidthstring 00.00.0000
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -2138,11 +2157,20 @@ stop()
  is executed).
 \end_layout
 
-\begin_layout List
+\begin_layout Labeling
 \labelwidthstring 00.00.0000
-DEACTIVATED() makes sure that all tests following this instruction (in a
- test function, see next paragraph) are deactivated, and inserts a reminder
- in the logger about the fact that some tests are deactivated in this suite.
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+DEACTIVATED()
+\end_layout
+
+\end_inset
+
+ makes sure that all tests following this instruction (in a test function,
+ see next paragraph) are deactivated, and inserts a reminder in the logger
+ about the fact that some tests are deactivated in this suite.
 \end_layout
 
 \begin_layout Standard
@@ -2151,7 +2179,7 @@ For all these functions, you have an additional optional argument
 status collapsed
 
 \begin_layout Plain Layout
-msg
+msg =
 \end_layout
 
 \end_inset
@@ -2202,7 +2230,7 @@ status collapsed
  code of the test was not executed correctly).
  Moreover, these functions record the results, the context of the test and
  the timing in a logger (object 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -2212,7 +2240,7 @@ svSuiteData
 \end_inset
 
  inheriting from 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -2333,7 +2361,7 @@ Log()
  You see how a report is printed, with a first part being a short summary
  by categories (assertions run at the command line are placed automatically
  in the 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Code
 status collapsed
 
 \begin_layout Plain Layout
@@ -2635,7 +2663,7 @@ ls()
 
  lists all components recorded in the test suite.
  Each component is a 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -2645,7 +2673,7 @@ svTestData
 \end_inset
 
  object inheriting from 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -2666,7 +2694,7 @@ $
 
  operator.
  There are, of course similar methods defined for those 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -2755,7 +2783,7 @@ stats(myTest)
 
 \begin_layout Standard
 As the logger inherits from 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -2938,7 +2966,7 @@ is.svTest(test_function)
 
 \begin_layout Standard
 A test function should be made a special object called 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -2959,7 +2987,7 @@ svUnit
 
  can recognize it.
  This 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -3367,7 +3395,7 @@ svUnit
 \end_layout
 
 \begin_layout Standard
-A test unit is a sourceable text file that contains one or more test functions,
+A test unit is a source-able text file that contains one or more test functions,
  plus possibly 
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -3428,7 +3456,7 @@ living
 \end_inset
 
  alone as separate 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -3548,12 +3576,12 @@ dir =
 
 \end_inset
 
- argument of 
+ argument of
 \begin_inset Flex CharStyle:Code
 status collapsed
 
 \begin_layout Plain Layout
-makeUnit()
+ makeUnit()
 \end_layout
 
 \end_inset
@@ -4204,7 +4232,7 @@ status collapsed
 
 \end_inset
 
- file should looks like (exemple of the 
+ file should looks like (example of the 
 \begin_inset Flex CharStyle:Pkg
 status collapsed
 
@@ -4357,7 +4385,6 @@ svUnit
 status collapsed
 
 \begin_layout Plain Layout
-
 R CMD check
 \end_layout
 
@@ -4368,7 +4395,6 @@ R CMD check
 status collapsed
 
 \begin_layout Plain Layout
-
 require()
 \end_layout
 
@@ -4423,7 +4449,6 @@ svUnit
 status collapsed
 
 \begin_layout Plain Layout
-
 svUnit
 \end_layout
 
@@ -4434,7 +4459,6 @@ svUnit
 status collapsed
 
 \begin_layout Plain Layout
-
 Suggests:
 \end_layout
 
@@ -4455,7 +4479,6 @@ DESCRIPTION
 status collapsed
 
 \begin_layout Plain Layout
-
 Depends:
 \end_layout
 
@@ -4466,7 +4489,6 @@ Depends:
 status collapsed
 
 \begin_layout Plain Layout
-
 Imports:
 \end_layout
 
@@ -4684,7 +4706,7 @@ makeUnit()
 \end_inset
 
  function to this 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -4763,7 +4785,7 @@ svSuiteList()
 
 \end_inset
 
-,...
+, ...
  unless you define an adequate filter expression that will exclude them
  from your list)! As the default argument suggests it, the regular expression
  for list exclusion could also be recorded in 
@@ -4924,7 +4946,7 @@ svSuiteList()
 \end_inset
 
  can also find automatically 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -5019,7 +5041,7 @@ status collapsed
 
  temporary directory, and which collects together all tests in the user's
  workspace (either as 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -5046,7 +5068,7 @@ runTest()
 \end_inset
 
  as usual, but this time, you apply it to your 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -5095,7 +5117,7 @@ summary(Log())
 
 \begin_layout Standard
 There are many other tools to manipulate 
-\begin_inset Flex CharStyle:Var
+\begin_inset Flex CharStyle:Class
 status collapsed
 
 \begin_layout Plain Layout
@@ -5293,7 +5315,7 @@ Select the tests you want to run in the top part,
 
 \begin_layout Itemize
 Click the 
-\begin_inset Flex CharStyle:MenuItem
+\begin_inset Flex CharStyle:Widget
 status collapsed
 
 \begin_layout Plain Layout
@@ -5322,7 +5344,7 @@ Click on an item to open the test unit at that place in a buffer in Komodo.
 
 \begin_layout Standard
 The 
-\begin_inset Flex CharStyle:MenuItem
+\begin_inset Flex CharStyle:Widget
 status collapsed
 
 \begin_layout Plain Layout
@@ -5364,6 +5386,7 @@ hor_pos "c"
 has_inner_box 0
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
@@ -5415,6 +5438,7 @@ status collapsed
 \end_layout
 
 \begin_layout Bibliography
+\labelwidthstring References
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "Grosjean"
@@ -5438,6 +5462,7 @@ http://www.ci.tuwien.ac.at/Conferences/DSC-2003
 \end_layout
 
 \begin_layout Bibliography
+\labelwidthstring References
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "IEEE"
@@ -5451,6 +5476,7 @@ IEEE Standards Boards, 1993.
 \end_layout
 
 \begin_layout Bibliography
+\labelwidthstring References
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "Ihaka"
@@ -5476,6 +5502,7 @@ J.
 \end_layout
 
 \begin_layout Bibliography
+\labelwidthstring References
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "Jeffries"
@@ -5498,6 +5525,7 @@ http://www.xprogramming.com
 \end_layout
 
 \begin_layout Bibliography
+\labelwidthstring References
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "Konig"
@@ -5513,6 +5541,7 @@ König, T., K.
 \end_layout
 
 \begin_layout Bibliography
+\labelwidthstring References
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "Rcore"
