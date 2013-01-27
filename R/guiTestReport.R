@@ -5,7 +5,7 @@ guiSuiteList <- function (sep = "\t", path = NULL, compare = TRUE)
 		oldSuites <- .getTemp(".guiSuiteListCache", default = "")
 		## Compare both versions
 		if (!identical(Suites, oldSuites)) {
-			## Keep a copy of the last version in TempEnv
+			## Keep a copy of the last version in SciViews:TempEnv
 			.assignTemp(".guiSuiteListCache", Suites)
 			Changed <- TRUE
 		} else Changed <- FALSE

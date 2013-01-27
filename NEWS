@@ -1,5 +1,14 @@
 = svUnit News
 
+== svUnit 0.7-11
+
+* Temporary objects are now saved in SciViews:TempEnv instead of TempEnv.
+
+* runTest.svSuite() does not create .TestSuiteEnv into .GlobalEnv any more. This
+  object is now stored in SciViews:TempEnv (CRAN does not allow to assign in
+  .GlobalEnv).
+
+
 == svUnit 0.7-10
 
 * In runTest.svSuite(), a <<- assignation is replaced by
