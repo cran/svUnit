@@ -1,5 +1,10 @@
 = svUnit News
 
+== svUnit 0.7-12
+
+* Rework of Author field in DESCRIPTION file.
+
+
 == svUnit 0.7-11
 
 * Temporary objects are now saved in SciViews:TempEnv instead of TempEnv.

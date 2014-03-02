@@ -1,6 +1,6 @@
-888e8be3a1dfcd6a634888e0ba32e151 *DESCRIPTION
+80550f39fc408cbef79de2ba7ee11f44 *DESCRIPTION
 b65dc7bf1beccac945cf1e48d10f9ab3 *NAMESPACE
-553830165a32b43fe9cd95119b06dff3 *NEWS
+882debabfcb123f08b59acf89d5ded0e *NEWS
 47c364a4372fe36bb4ea224338c527e1 *R/Log.R
 36cc6d3f50d5087ffbc2087e4b9770ce *R/check.R
 1067522efb5243935a8164048f23a235 *R/guiTestReport.R
@@ -10,11 +10,12 @@ e028d5a82b14432dfc52efe114dfafa1 *R/svSuite.R
 c248fc4f0d4ace500ce4d124bb3e167c *R/svSuiteData.R
 b2f99c4902a71b8336bdc57014e077cd *R/svTest.R
 67e1a1049d7ad5e47cec583f20802234 *R/svTestData.R
-344ec7a7d5f58d3509b3b053d244c160 *R/svUnit-internal.R
+e641219f3cc6cb2feb67e18ac9775a38 *R/svUnit-internal.R
 895f02670566ac2746c8e4dcf47756ea *TODO
-58427748bd6cfed1b162d4507afe9579 *TestsvUnit.R
+37b5ce66c79ff8abe8045306eb336d32 *build/vignette.rds
 9ad96b84f192f7f1987dd3b5d6c9270e *inst/CITATION
-393a5ca445f6965873eca0259a17f833 *inst/LICENSE
+58427748bd6cfed1b162d4507afe9579 *inst/TestsvUnit.R
+4f64f9e905f30ceb689a4e5031701cfa *inst/doc/svUnit.R
 0096d6219d8d7b8f6c4b852c7ca60323 *inst/doc/svUnit.Rnw
 beaebe6e33882f742b34c26a3f002b8c *inst/doc/svUnit.pdf
 739d0bb836670322cdc674a76b2e290f *inst/komodo/sciviewskunit-ko.xpi
@@ -29,7 +30,7 @@ dd878b75c1933e997573d87163436111 *man/check.Rd
 de0cb2ab7468300edd7c839a1c7ef648 *man/svSuiteData.Rd
 c71ef7f3097507896edbe39f193c41ad *man/svTest.Rd
 d335d15d983f95433eae26629a77a551 *man/svTestData.Rd
-f67aa65c0ee60b203439f9f287da205e *man/svUnit-package.Rd
+025271a34a5de082be5d5873b1d9bac7 *man/svUnit-package.Rd
 e944fe15d759aa84fa7c395177372423 *man/unitTests.svUnit.Rd
 0096d6219d8d7b8f6c4b852c7ca60323 *vignettes/svUnit.Rnw
 4ecb7f72574e5af3251ef78d08344700 *vignettes/svUnit.lyx
