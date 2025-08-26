@@ -1,3 +1,13 @@
+# svUnit 1.0.8
+
+- Several URL corrections (for CRAN).
+
+# svUnit 1.0.7
+
+- New format for CITATION.
+
+- An Hex logo is added.
+
 # svUnit 1.0.6
 
 - A few more URLs corrections (for CRAN)!
